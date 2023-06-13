@@ -1,15 +1,14 @@
 import constType.ConstMessenger;
 import constType.ConstTypeProject;
-import entity.Chair;
-import entity.ChairDetails;
-import entity.Flight;
+import entity.*;
+import regex.CheckDate;
 import regex.CheckNumber;
 import regex.CheckTimer;
 import service.*;
-import service.impl.ChairDetailsServiceImpl;
-import service.impl.ChairServiceImpl;
-import service.impl.FlightServiceImpl;
+import service.builder.*;
+import service.impl.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,6 +17,9 @@ public class Main {
     public static FlightService flightService = new FlightServiceImpl();
     public static ChairService chairService = new ChairServiceImpl();
     public static ChairDetailsService chairDetailsService = new ChairDetailsServiceImpl();
+    public static StorageService storageService = new StorageServiceImpl();
+    public static FlightDetailsService flightDetailsService = new FlightDetailsServiceImpl();
+    public static ChairPriceService chairPriceService = new ChairPriceServiceImpl();
 
     public static void main(String[] args) {
         int key = -1;
@@ -25,6 +27,7 @@ public class Main {
             System.out.println("Menu");
             System.out.println("1.NewFlight");
             System.out.println("2.ShowFLight");
+            System.out.println("3.new Flight details");
             System.out.println("0.Exit");
             key = input.nextInt();
             input.nextLine();
@@ -35,13 +38,77 @@ public class Main {
                 case 2:
                     showFlightPage();
                     break;
+                case 3:
+                    newflightDetailsPage();
+                    break;
                 case 0:
                 default:
                     break;
             }
         } while (key != 0);
+
 //        newFlightPage();
 //        showFlightPage();
+//        newStoragePage(1);
+
+//        newflightDetailsPage();
+    }
+
+    private static void newflightDetailsPage() {
+        showMessengerEnterInformation(ConstMessenger.FLIGHT);
+        showFlightPage();
+        showMessengerEnterInformation(ConstMessenger.ID_FLIGHT);
+        String idFlight = input.nextLine();
+        String date = isCheckDateRegex(ConstMessenger.DATE_FLIGHT_DETAILS);
+        long storageValume = storageService.getValumeByIdFlight(Integer.valueOf(idFlight));
+        FlightDetails flightDetails = new FlightDetailsBuilder()
+                .withIdBuilder(flightDetailsService.getFlightDetailsId())
+                .withIdFlightBuilder(Integer.valueOf(idFlight))
+                .withDateBuilder(date)
+                .withStorageValumeBuilder(storageValume)
+                .withUsedStorageValume(Long.valueOf("0"))
+                .builder();
+        boolean isResult = flightDetailsService.saveFlightDetails(flightDetails);
+        if (isResult) {
+            int idFlightDetails = flightDetailsService.getFlightDetailsId();
+            newChairPricePage(
+                    ConstTypeProject.LIST_CHAIR_PRICE_ID_DEFAULT[0],
+                    ConstTypeProject.TYPE_SKY_BOSS,
+                    idFlightDetails);
+            newChairPricePage(
+                    ConstTypeProject.LIST_CHAIR_PRICE_ID_DEFAULT[1],
+                    ConstTypeProject.TYPE_DELUXE,
+                    idFlightDetails);
+            newChairPricePage(
+                    ConstTypeProject.LIST_CHAIR_PRICE_ID_DEFAULT[2],
+                    ConstTypeProject.TYPE_ORIGINAL,
+                    idFlightDetails);
+            IdDefaultHandle.writeIdDefault(idFlightDetails + 1, ConstTypeProject.PATH_FLIGHT_DETAILS_ID);
+        }
+    }
+
+    private static void newChairPricePage(int chairPriceId, String type, int idFlightDetail) {
+        String price = isCheckNumberRegex(ConstTypeProject.PRICE + type);
+        ChairPrice chairPrice = new ChairPriceBuilder()
+                .withIdBuilder(chairPriceId)
+                .withTypeBuilder(type)
+                .withPriceBuilder(Long.valueOf(price))
+                .builder();
+        chairPriceService.saveChairPrice(chairPrice, idFlightDetail);
+    }
+
+    private static void newStoragePage(int flightId) {
+        showMessengerEnterInformation("storage");
+        String valume = isCheckNumberRegex(ConstMessenger.STORAGE_VALUME);
+        Storage storage = new StorageBuilder()
+                .withIdBuilder(Integer.valueOf(storageService.getStorageId()))
+                .withIdFlightBuilder(Integer.valueOf(flightId))
+                .withValumeBuilder(Long.valueOf(valume))
+                .builder();
+        boolean isResult = storageService.saveStorage(storage);
+        if (isResult) {
+            IdDefaultHandle.writeIdDefault(storageService.getStorageId() + 1, ConstTypeProject.PATH_STORAGE_ID_DEFAULT);
+        }
     }
 
     private static void newChairPage(int idFlight) {
@@ -53,9 +120,9 @@ public class Main {
                 .withLineQuantityBuilder(Integer.valueOf(lineQuantity))
                 .builder();
         boolean isResult = chairService.saveChair(chair);
-        if (isResult){
+        if (isResult) {
             Chair chairResult = chairService.getChair();
-            IdDefaultHandle.writeIdDefault(chairResult.getId()+1,ConstTypeProject.PATH_CHAIR_ID_DEFAULT);
+            IdDefaultHandle.writeIdDefault(chairResult.getId() + 1, ConstTypeProject.PATH_CHAIR_ID_DEFAULT);
             for (int i = 0; i < chairResult.getLineQuantity(); i++) {
                 showMessengerEnterInformation("for the sequence " + ConstTypeProject.LIST_LINE_DEFAULT[i]);
                 addListChairDetailPage(chairResult, i, ConstTypeProject.TYPE_SKY_BOSS);
@@ -66,20 +133,6 @@ public class Main {
         }
     }
 
-    private static String isCheckNumberRegex(String type) {
-        int key = -1;
-        String number;
-        do {
-            showMessengerEnterInformation(type);
-            number = input.nextLine();
-            if (CheckNumber.isNumber(number)) {
-                key = 0;
-            } else {
-                showMessengerEnterInformation(" format");
-            }
-        } while (key != 0);
-        return number;
-    }
 
     private static void addListChairDetailPage(Chair chairResult, int i, String type) {
         showMessengerEnterInformation(type);
@@ -108,7 +161,6 @@ public class Main {
         String airlineName = input.nextLine();
         String departureTime = isCheckTimerRegex(ConstMessenger.DEPARTURE_TIME);
         String arrivalTime = isCheckTimerRegex(ConstMessenger.ARRIVAL_TIME);
-        showMessengerEnterInformation(ConstMessenger.ARRIVAL_TIME);
         Flight flight = new FlightBuilder()
                 .withIdBuilder(flightService.getFlightId())
                 .withFrom_locationBuilder(fromLocation)
@@ -120,6 +172,7 @@ public class Main {
                 .builder();
         boolean result = flightService.saveFlight(flight);
         if (result) {
+            newStoragePage(flightService.getFlightId());
             newChairPage(flightService.getFlightId());
             IdDefaultHandle.writeIdDefault(flightService.getFlightId() + 1, ConstTypeProject.PATH_FLIGHT_ID);
             System.out.println("new succes");
@@ -138,7 +191,37 @@ public class Main {
                 showMessengerEnterInformation(" format");
             }
         } while (key != 0);
-        return time;
+        return CheckTimer.formatTime(time);
+    }
+
+    private static String isCheckNumberRegex(String type) {
+        int key = -1;
+        String number;
+        do {
+            showMessengerEnterInformation(type);
+            number = input.nextLine();
+            if (CheckNumber.isNumber(number)) {
+                key = 0;
+            } else {
+                showMessengerEnterInformation(" format");
+            }
+        } while (key != 0);
+        return number;
+    }
+
+    private static String isCheckDateRegex(String type) {
+        int key = -1;
+        String date;
+        do {
+            showMessengerEnterInformation(type);
+            date = input.nextLine();
+            if (CheckDate.isDate(date)) {
+                key = 0;
+            } else {
+                showMessengerEnterInformation(" format");
+            }
+        } while (key != 0);
+        return CheckDate.formatDate(date);
     }
 
     private static void showFlightPage() {

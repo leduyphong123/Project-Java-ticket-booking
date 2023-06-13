@@ -3,7 +3,7 @@ package service.impl;
 import constType.ConstTypeProject;
 import entity.Chair;
 import entity.ChairDetails;
-import service.ChairDetailsBuilder;
+import service.builder.ChairDetailsBuilder;
 import service.ChairDetailsService;
 import service.FileHandleService;
 
@@ -11,16 +11,25 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 
 public class ChairDetailsServiceImpl implements ChairDetailsService {
-    private int index=1;
+    private int index = 1;
+
     @Override
-    public boolean saveChairDetails(ChairDetails chairDetails) {
-        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT)){
+    public boolean saveChairDetails(ChairDetails chairDetails, int flightId) {
+        if (!FileHandleService.isFileEmtry(
+                ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT
+                        + "_"
+                        + flightId
+                        + ConstTypeProject.CSV)) {
             return false;
         }
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-            fw = new FileWriter(ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT, true);
+            fw = new FileWriter(
+                    ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT
+                            + "_"
+                            + flightId
+                            + ConstTypeProject.CSV, true);
             bw = new BufferedWriter(fw);
             bw.write(String.valueOf(chairDetails.getId()));
             bw.write(",");
@@ -52,43 +61,43 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
     }
 
     @Override
-    public boolean saveListChairDetails(Chair chair,String nameLine, int numberChair, String type) {
-        if (numberChair==0){
+    public boolean saveListChairDetails(Chair chair, String nameLine, int numberChair, String type) {
+        if (numberChair == 0) {
             return true;
         }
-        switch (type){
+        switch (type) {
             case ConstTypeProject.TYPE_SKY_BOSS:
-                saveType(chair, nameLine, numberChair,ConstTypeProject.TYPE_SKY_BOSS+chair.getId());
+                saveType(chair, nameLine, numberChair, ConstTypeProject.TYPE_SKY_BOSS + chair.getId());
                 break;
             case ConstTypeProject.TYPE_DELUXE:
-                saveType(chair, nameLine, numberChair,ConstTypeProject.TYPE_DELUXE+chair.getId());
+                saveType(chair, nameLine, numberChair, ConstTypeProject.TYPE_DELUXE + chair.getId());
                 break;
             case ConstTypeProject.TYPE_ORIGINAL:
-                saveType(chair, nameLine, numberChair,ConstTypeProject.TYPE_ORIGINAL+chair.getId());
+                saveType(chair, nameLine, numberChair, ConstTypeProject.TYPE_ORIGINAL + chair.getId());
                 break;
             default:
                 return false;
         }
-        index+=numberChair;
+        index += numberChair;
         return true;
     }
 
-    private void saveType(Chair chair, String nameLine, int numberChair,String type) {
-        for (int i = index; i< numberChair +index; i++){
+    private void saveType(Chair chair, String nameLine, int numberChair, String type) {
+        for (int i = index; i < numberChair + index; i++) {
             ChairDetails chairDetails = new ChairDetailsBuilder()
                     .withIdBuilder(1)
                     .withIdChairBuilder(chair.getId())
-                    .withChairNameBuilder(nameLine +i)
+                    .withChairNameBuilder(nameLine + i)
                     .withTypeBuilder(type)
                     .builder();
-            saveChairDetails(chairDetails);
+            saveChairDetails(chairDetails, chair.getIdFlight());
         }
     }
 
 
     @Override
     public void setIndexDefault() {
-        this.index=1;
+        this.index = 1;
     }
 
 }

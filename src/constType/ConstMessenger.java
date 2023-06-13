@@ -8,4 +8,8 @@ public class ConstMessenger {
     public static final String DEPARTURE_TIME = "departure time";
     public static final String ARRIVAL_TIME = "arrival time";
     public static final String LINE_QUANTITY ="line quantity";
+    public static final String STORAGE_VALUME = "storage valume";
+    public static final String ID_FLIGHT = "code flight";
+    public static final String DATE_FLIGHT_DETAILS = "date";
+    public static final String FLIGHT = "flight";
 }

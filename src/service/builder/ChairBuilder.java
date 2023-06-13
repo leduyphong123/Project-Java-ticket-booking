@@ -1,4 +1,4 @@
-package service;
+package service.builder;
 
 import entity.Chair;
 
