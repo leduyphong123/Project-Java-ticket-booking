@@ -3,12 +3,18 @@ package service.impl;
 import constType.ConstTypeProject;
 import entity.Chair;
 import entity.ChairDetails;
+import entity.Flight;
 import service.builder.ChairDetailsBuilder;
 import service.ChairDetailsService;
 import service.FileHandleService;
+import service.builder.FlightBuilder;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChairDetailsServiceImpl implements ChairDetailsService {
     private int index = 1;
@@ -17,7 +23,6 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
     public boolean saveChairDetails(ChairDetails chairDetails, int flightId) {
         if (!FileHandleService.isFileEmtry(
                 ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT
-                        + "_"
                         + flightId
                         + ConstTypeProject.CSV)) {
             return false;
@@ -27,7 +32,6 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
         try {
             fw = new FileWriter(
                     ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT
-                            + "_"
                             + flightId
                             + ConstTypeProject.CSV, true);
             bw = new BufferedWriter(fw);
@@ -98,6 +102,56 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
     @Override
     public void setIndexDefault() {
         this.index = 1;
+    }
+
+    @Override
+    public List<ChairDetails> getAllByFlightId(int idFlight) {
+        if (!FileHandleService.isFileEmtry(
+                ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT
+                        + idFlight
+                        + ConstTypeProject.CSV)) {
+            return null;
+        }
+        List<ChairDetails> chairDetailsList = new ArrayList<>();
+        FileReader fr = null;
+        BufferedReader br = null;
+        try {
+            fr = new FileReader(
+                    ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT
+                            + idFlight
+                            + ConstTypeProject.CSV);
+            br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] result = line.split(",");
+                ChairDetails chairDetails = new ChairDetailsBuilder()
+                        .withIdBuilder(Integer.valueOf(result[0]))
+                        .withIdChairBuilder(Integer.valueOf(result[1]))
+                        .withChairNameBuilder(result[2])
+                        .withTypeBuilder(result[3])
+                        .builder();
+                chairDetailsList.add(chairDetails);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+            if (fr != null) {
+                try {
+                    fr.close();
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        }
+        return chairDetailsList;
     }
 
 }

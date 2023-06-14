@@ -31,4 +31,6 @@ public class ChairDetailsBuilder {
     public ChairDetails builder() {
         return new ChairDetails(id,idChair,chairName,type);
     }
+
+
 }

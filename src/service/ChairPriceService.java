@@ -7,5 +7,6 @@ import java.util.List;
 public interface ChairPriceService {
     boolean saveChairPrice(ChairPrice chairPrice,int idFlightDetail);
 
-    List<ChairPrice> getChairPriceList(int idFlightDetail);
+
+    List<ChairPrice> getAllByFlightId(int idFlightDetail);
 }

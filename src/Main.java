@@ -8,7 +8,6 @@ import service.*;
 import service.builder.*;
 import service.impl.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,6 +19,7 @@ public class Main {
     public static StorageService storageService = new StorageServiceImpl();
     public static FlightDetailsService flightDetailsService = new FlightDetailsServiceImpl();
     public static ChairPriceService chairPriceService = new ChairPriceServiceImpl();
+    public static SeatSpecsService seatSpecsService = new SeatSpecsServiceImpl();
 
     public static void main(String[] args) {
         int key = -1;
@@ -50,8 +50,8 @@ public class Main {
 //        newFlightPage();
 //        showFlightPage();
 //        newStoragePage(1);
-
 //        newflightDetailsPage();
+
     }
 
     private static void newflightDetailsPage() {
@@ -84,6 +84,7 @@ public class Main {
                     ConstTypeProject.TYPE_ORIGINAL,
                     idFlightDetails);
             IdDefaultHandle.writeIdDefault(idFlightDetails + 1, ConstTypeProject.PATH_FLIGHT_DETAILS_ID);
+            renderSeatSpecs(Integer.valueOf(idFlight),idFlightDetails);
         }
     }
 
@@ -177,6 +178,11 @@ public class Main {
             IdDefaultHandle.writeIdDefault(flightService.getFlightId() + 1, ConstTypeProject.PATH_FLIGHT_ID);
             System.out.println("new succes");
         }
+    }
+    private static void renderSeatSpecs(int idFlight,int idFlightDetail){
+        List<ChairDetails> chairDetailsList = chairDetailsService.getAllByFlightId(idFlight);
+        List<ChairPrice> chairPriceList = chairPriceService.getAllByFlightId(idFlightDetail);
+        seatSpecsService.saveSeatSpecsList(chairDetailsList,chairPriceList,idFlightDetail);
     }
 
     private static String isCheckTimerRegex(String type) {
