@@ -20,11 +20,11 @@ public class IdDefaultHandle {
         return max;
     }
 
-    public static boolean writeIdDefault(int id,String type) {
+    public static boolean writeIdDefault(int id,String path) {
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-            fw = new FileWriter(type, true);
+            fw = new FileWriter(path, true);
             bw = new BufferedWriter(fw);
             bw.write(String.valueOf(id));
             bw.newLine();

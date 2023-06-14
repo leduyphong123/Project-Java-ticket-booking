@@ -14,6 +14,7 @@ public class ConstTypeProject {
     public static final String PATH_FLIGHT_DETAILS_ID = PATH_DEFAULT + "flightDetailsId"+CSV;
     public static final String PATH_CHAIR_DEFAULT = PATH_DEFAULT + "chair"+CSV;
     public static final String PATH_CHAIR_DETAILS_DEFAULT = PATH_DEFAULT + PATH_CHAIR_PAKE_DETAILS_DEFAULT + "chairDetails_";
+    public static final String PATH_CHAIR_DETAILS_DEFAULT_ID = PATH_DEFAULT + PATH_CHAIR_PAKE_DETAILS_DEFAULT + "chairDetailsId_";
     public static final String PATH_CHAIR_PRICE_DEFAULT = PATH_DEFAULT + PATH_CHAIR_PAKE_PRICE_DEFAULT + "chairPrice_";
     public static final String PATH_CHAIR_ID_DEFAULT = PATH_DEFAULT + "chairId"+CSV;
     public static final String PATH_STORAGE_DEFAULT = PATH_DEFAULT + "storage"+CSV;

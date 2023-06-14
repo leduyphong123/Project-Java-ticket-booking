@@ -4,6 +4,7 @@ import constType.ConstTypeProject;
 import entity.Chair;
 import entity.ChairDetails;
 import entity.Flight;
+import service.IdDefaultHandle;
 import service.builder.ChairDetailsBuilder;
 import service.ChairDetailsService;
 import service.FileHandleService;
@@ -71,13 +72,13 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
         }
         switch (type) {
             case ConstTypeProject.TYPE_SKY_BOSS:
-                saveType(chair, nameLine, numberChair, ConstTypeProject.TYPE_SKY_BOSS + chair.getId());
+                saveType(chair, nameLine, numberChair, ConstTypeProject.TYPE_SKY_BOSS);
                 break;
             case ConstTypeProject.TYPE_DELUXE:
-                saveType(chair, nameLine, numberChair, ConstTypeProject.TYPE_DELUXE + chair.getId());
+                saveType(chair, nameLine, numberChair, ConstTypeProject.TYPE_DELUXE);
                 break;
             case ConstTypeProject.TYPE_ORIGINAL:
-                saveType(chair, nameLine, numberChair, ConstTypeProject.TYPE_ORIGINAL + chair.getId());
+                saveType(chair, nameLine, numberChair, ConstTypeProject.TYPE_ORIGINAL);
                 break;
             default:
                 return false;
@@ -88,17 +89,40 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
 
     private void saveType(Chair chair, String nameLine, int numberChair, String type) {
         for (int i = index; i < numberChair + index; i++) {
+            int flightId = chair.getIdFlight();
             ChairDetails chairDetails = new ChairDetailsBuilder()
-                    .withIdBuilder(1)
+                    .withIdBuilder(getChairDetailsId(flightId))
                     .withIdChairBuilder(chair.getId())
                     .withChairNameBuilder(nameLine + i)
                     .withTypeBuilder(type)
                     .builder();
-            saveChairDetails(chairDetails, chair.getIdFlight());
+            saveChairDetails(chairDetails, flightId);
+            IdDefaultHandle.writeIdDefault(getChairDetailsId(flightId)+1,
+                    ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT_ID
+                    + flightId
+                    + ConstTypeProject.CSV);
         }
     }
 
-
+    public int getChairDetailsId(int flightId) {
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT_ID
+                + flightId
+                + ConstTypeProject.CSV)) {
+            return 0;
+        }
+        if (IdDefaultHandle.readIdDefault(ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT_ID
+                + flightId
+                + ConstTypeProject.CSV).size()==0){
+            IdDefaultHandle.writeIdDefault(1,ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT_ID
+                    + flightId
+                    + ConstTypeProject.CSV);
+            return 1;
+        }
+        List<Integer> listIdDefault = IdDefaultHandle.readIdDefault(ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT_ID
+                + flightId
+                + ConstTypeProject.CSV);
+        return IdDefaultHandle.getMaxIdDefault(listIdDefault);
+    }
     @Override
     public void setIndexDefault() {
         this.index = 1;
