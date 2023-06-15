@@ -97,6 +97,20 @@ public class AcountServiceImpl implements AcountService {
         return false;
     }
 
+    @Override
+    public Acount getUserNow(String email, String passworld) {
+        List<Acount> acountList=getAllAcount();
+        if (acountList==null){
+            return null;
+        }
+        for (Acount element: acountList){
+            if (element.getEmail().equals(email) && element.getPassword().equals(passworld)){
+                return element;
+            }
+        }
+        return null;
+    }
+
     public List<Acount> getAllAcount() {
         if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_ACOUNT)) {
             return null;

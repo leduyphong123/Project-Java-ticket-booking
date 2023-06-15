@@ -10,4 +10,6 @@ public interface AcountService {
     boolean checkEmail(String email);
 
     boolean checkAcount(String email, String passworld);
+
+    Acount getUserNow(String email, String passworld);
 }

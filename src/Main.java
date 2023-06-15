@@ -23,21 +23,169 @@ public class Main {
     public static TicketService ticketService = new TicketServiceImpl();
     public static TicketDetailService ticketDetailService = new TicketDetailsServiceImpl();
     public static AcountService acountService = new AcountServiceImpl();
+    public static Acount acountSession = null;
+
     public static void main(String[] args) {
-//        int key;
-//        do {
-//            System.out.println("Menu");
+        int keys;
+        do {
+            if (acountSession != null) {
+                if (acountSession.getType().equals("user")) {
+                    viewMenuUser();
+                } else if (acountSession.getType().equals("admin")) {
+                    viewMenuAdmin();
+                } else if (acountSession.getType().equals("staff")) {
+                    viewMenuStaff();
+                }
+            }
+            System.out.println("Menu");
+            System.out.println("1.Register");
+            System.out.println("2.Login");
+            System.out.println("3.Book ticket");
+            System.out.println("0.Exit");
+            keys = input.nextInt();
+            input.nextLine();
+            switch (keys) {
+                case 1:
+                    newRegisterPage("user");
+                    break;
+                case 2:
+                    newLoginPage();
+                    break;
+                case 3:
+                    viewBookTicket();
+                    break;
+                case 0:
+                default:
+                    break;
+            }
+        } while (keys != 0);
+
+
+//        newFlightPage();
+//        showFlightPage();
+//        newStoragePage(1);
+//        newflightDetailsPage();
+//        newflightDetailsPage();
+//        newRegisterPage("user");
+//        newLoginPage();
+
+    }
+
+    private static void viewMenuStaff() {
+        int key;
+        do {
+            System.out.println("Menu");
+            System.out.println("1.Show FLight");
+            System.out.println("2.new Flight details");
+            System.out.println("3.Show Flight details");
+            System.out.println("4.Show Ticket ");
+            System.out.println("5.Logout ");
+            System.out.println("0.Exit");
+            key = input.nextInt();
+            input.nextLine();
+            switch (key) {
+                case 1:
+                    showFlightPage();
+                    break;
+                case 2:
+                    newflightDetailsPage();
+                    break;
+                case 3:
+                    viewMenuFlightDetails();
+                    break;
+
+
+                case 5:
+                    newLoginPage();
+                    break;
+                case 0:
+                default:
+                    break;
+            }
+        } while (key != 0);
+    }
+
+    private static void viewMenuFlightDetails() {
+        int keys;
+        System.out.println("Menu show flight details");
+        System.out.println("1. show get date");
+        System.out.println("2. show get all");
+        System.out.println("0. exit");
+        keys = input.nextInt();
+        input.nextLine();
+        List<FlightDetails> flightDetailsList = flightDetailsService.getAllList();
+        switch (keys) {
+            case 1:
+                String date = isCheckDateInputRegex(ConstTypeProject.TYPE_DATE);
+                Search searchDate = SearchFactory.getSearchFatory(ConstTypeProject.TYPE_DATE);
+                List<FlightDetails> detailsListDate = searchDate.searchFlightDetailsList(flightDetailsList, date);
+                for (FlightDetails element : detailsListDate) {
+                    System.out.println(element);
+                }
+                break;
+            case 2:
+                for (FlightDetails element : flightDetailsList) {
+                    System.out.println(element);
+                }
+                break;
+            case 0:
+            default:
+                break;
+        }
+    }
+
+    private static void viewMenuAdmin() {
+        int key;
+        do {
+            System.out.println("Menu");
+            System.out.println("1.NewFlight");
+            System.out.println("2.ShowFLight");
+            System.out.println("3.New Luggage Price airline");
+            System.out.println("4.Register acount staff");
+            System.out.println("5.Logout");
+            System.out.println("0.Exit");
+            key = input.nextInt();
+            input.nextLine();
+            switch (key) {
+                case 1:
+                    newFlightPage();
+                    break;
+                case 2:
+                    showFlightPage();
+                    break;
+                case 3:
+                    newLuggagePricePage();
+                    break;
+                case 4:
+                    newRegisterPage("staff");
+                    break;
+                case 5:
+                    logout();
+                    key = 0;
+                    break;
+                case 0:
+                default:
+                    break;
+            }
+        } while (key != 0);
+    }
+
+    private static void viewMenuUser() {
+        int key;
+        do {
+            System.out.println("Menu");
 //            System.out.println("1.NewFlight");
 //            System.out.println("2.ShowFLight");
 //            System.out.println("3.New Luggage Price airline");
 //            System.out.println("4.new Flight details");
-//            System.out.println("5.Book ticket");
-//            System.out.println("6.Register");
-//            System.out.println("7.Login");
-//            System.out.println("0.Exit");
-//            key = input.nextInt();
-//            input.nextLine();
-//            switch (key) {
+            System.out.println("1.Book ticket");
+            System.out.println("2.History ticket");
+            System.out.println("3.Profile");
+            System.out.println("4.Logout");
+            System.out.println("0.Exit");
+            key = input.nextInt();
+            input.nextLine();
+            switch (key) {
 //                case 1:
 //                    newFlightPage();
 //                    break;
@@ -50,47 +198,41 @@ public class Main {
 //                case 4:
 //                    newflightDetailsPage();
 //                    break;
-//                case 5:
-//                      viewBookTicket();
-//                    break;
-//                case 6:
-//                      newRegisterPage("user");
-//                    break;
-//                case 7:
-//                      newLoginPage();
-//                    break;
-//                case 0:
-//                default:
-//                    break;
-//            }
-//        } while (key != 0);
+                case 1:
+                    viewBookTicket();
+                    break;
+                case 4:
+                    logout();
+                    key = 0;
+                    break;
+                case 0:
+                default:
+                    break;
+            }
+        } while (key != 0);
+    }
 
-//        newFlightPage();
-//        showFlightPage();
-//        newStoragePage(1);
-//        newflightDetailsPage();
-//        newflightDetailsPage();
-
-//        newRegisterPage("user");
-//        newLoginPage();
-
+    private static void logout() {
+        acountSession = null;
+        System.out.println("logout succes");
     }
 
     private static void newLoginPage() {
-        int key=-1;
+        int key = -1;
         do {
             System.out.println("Login");
             String email = isCheckEmailRegex("email");
             showMessengerEnterInformation("password");
             String passworld = input.nextLine();
-            boolean isResult = acountService.checkAcount(email,passworld);
-            if (isResult){
+            boolean isResult = acountService.checkAcount(email, passworld);
+            if (isResult) {
+                acountSession = acountService.getUserNow(email, passworld);
                 key = 0;
                 System.out.println("login sussec");
-            }else {
+            } else {
                 showMessengerError("wrong email password");
             }
-        }while (key!=0);
+        } while (key != 0);
     }
 
     private static void newRegisterPage(String type) {
@@ -104,15 +246,15 @@ public class Main {
                 .withPasswordBuilder(password)
                 .withTypeBuilder(type)
                 .builder();
-        boolean isResult= acountService.saveAcount(acount);
-        if (isResult){
-            IdDefaultHandle.writeIdDefault(acountService.getAcountId()+1,ConstTypeProject.PATH_ACOUNT_ID);
+        boolean isResult = acountService.saveAcount(acount);
+        if (isResult) {
+            IdDefaultHandle.writeIdDefault(acountService.getAcountId() + 1, ConstTypeProject.PATH_ACOUNT_ID);
             System.out.println("succes");
         }
     }
 
     private static String getPassword() {
-        String password=null;
+        String password = null;
         int key = -1;
         do {
             showMessengerEnterInformation("password");
@@ -130,17 +272,17 @@ public class Main {
     }
 
     private static String getEmail() {
-        int key=-1;
+        int key = -1;
         String email;
         do {
             email = isCheckEmailRegex("email");
             boolean isEmailExist = acountService.checkEmail(email);
-            if (isEmailExist==false){
-                key=0;
-            }else {
+            if (isEmailExist == false) {
+                key = 0;
+            } else {
                 showMessengerError("Already exist");
             }
-        }while (key!=0);
+        } while (key != 0);
         return email;
     }
 
@@ -153,6 +295,10 @@ public class Main {
         showTempChairPriceList(tempChairPriceList);
         showMessengerEnterInformation("code chair");
         String chairPriceId = input.nextLine().trim();
+        if (acountSession == null) {
+            newLoginPage();
+            return;
+        }
         ChairPrice chairPrice = tempChairPriceList.get(Integer.parseInt(chairPriceId) - 1);
 
         String email = isCheckEmailRegex("email");
@@ -233,7 +379,7 @@ public class Main {
         Flight flight = flightService.getFlightToId(flightId);
         Ticket ticket = new TicketBuilder()
                 .withIdBuilder(ticketService.getTicketId())
-                .withUserIdBuilder(1)
+                .withUserIdBuilder(acountSession.getId())
                 .withFullName(title + ": " + firtName + lastName)
                 .withValumeBuilder(valume)
                 .withAirlineCode(flight.getAirline_name() + "-" + flight.getAirline_id())
@@ -530,7 +676,7 @@ public class Main {
     }
 
     private static void showMessengerError(String mesenger) {
-        System.err.println( mesenger);
+        System.err.println(mesenger);
     }
 
     private static void newFlightPage() {
@@ -636,6 +782,21 @@ public class Main {
             showMessengerEnterInformation(messenger);
             date = input.nextLine().trim();
             if (CheckDate.isDate(date)) {
+                key = 0;
+            } else {
+                showMessengerError("format");
+            }
+        } while (key != 0);
+        return CheckDate.formatDate(date);
+    }
+
+    private static String isCheckDateInputRegex(String messenger) {
+        int key = -1;
+        String date;
+        do {
+            showMessengerEnterInformation(messenger);
+            date = input.nextLine().trim();
+            if (CheckDateInput.isDate(date)) {
                 key = 0;
             } else {
                 showMessengerError("format");
