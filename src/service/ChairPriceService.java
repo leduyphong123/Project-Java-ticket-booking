@@ -8,5 +8,5 @@ public interface ChairPriceService {
     boolean saveChairPrice(ChairPrice chairPrice,int idFlightDetail);
 
 
-    List<ChairPrice> getAllByFlightId(int idFlightDetail);
+    List<ChairPrice> getAllByFlightDetailId(int idFlightDetail);
 }

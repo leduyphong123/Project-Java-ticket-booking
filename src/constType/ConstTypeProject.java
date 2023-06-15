@@ -1,6 +1,7 @@
 package constType;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 public class ConstTypeProject {
     public static final String PATH_DEFAULT = "data//";
@@ -8,23 +9,35 @@ public class ConstTypeProject {
     public static final String PATH_SEACT_SPECS_PAKE_DEFAULT = "listSeactSpecs//";
     public static final String CSV = ".csv";
     public static final String PATH_CHAIR_PAKE_PRICE_DEFAULT = "listChairPrice//";
-    public static final String PATH_FLIGHT_ID = PATH_DEFAULT + "flightId"+CSV;
-    public static final String PATH_FLIGHT_DEFAULT = PATH_DEFAULT + "flight"+CSV;
-    public static final String PATH_FLIGHT_DETAILS_DEFAULT = PATH_DEFAULT + "flightDetails"+CSV;
-    public static final String PATH_FLIGHT_DETAILS_ID = PATH_DEFAULT + "flightDetailsId"+CSV;
-    public static final String PATH_CHAIR_DEFAULT = PATH_DEFAULT + "chair"+CSV;
+    public static final String PATH_LUGGAGE_PAGE_DEFAULT = "listLuggagePrice//";
+    public static final String PATH_FLIGHT_ID = PATH_DEFAULT + "flightId" + CSV;
+    public static final String PATH_FLIGHT_DEFAULT = PATH_DEFAULT + "flight" + CSV;
+    public static final String PATH_FLIGHT_DETAILS_DEFAULT = PATH_DEFAULT + "flightDetails" + CSV;
+    public static final String PATH_FLIGHT_DETAILS_ID = PATH_DEFAULT + "flightDetailsId" + CSV;
+    public static final String PATH_CHAIR_DEFAULT = PATH_DEFAULT + "chair" + CSV;
     public static final String PATH_CHAIR_DETAILS_DEFAULT = PATH_DEFAULT + PATH_CHAIR_PAKE_DETAILS_DEFAULT + "chairDetails_";
     public static final String PATH_CHAIR_DETAILS_DEFAULT_ID = PATH_DEFAULT + PATH_CHAIR_PAKE_DETAILS_DEFAULT + "chairDetailsId_";
     public static final String PATH_CHAIR_PRICE_DEFAULT = PATH_DEFAULT + PATH_CHAIR_PAKE_PRICE_DEFAULT + "chairPrice_";
-    public static final String PATH_CHAIR_ID_DEFAULT = PATH_DEFAULT + "chairId"+CSV;
-    public static final String PATH_STORAGE_DEFAULT = PATH_DEFAULT + "storage"+CSV;
-    public static final String PATH_STORAGE_ID_DEFAULT = PATH_DEFAULT + "storageId"+CSV;
-    public static final String PATH_SEAT_SPECS= PATH_DEFAULT+ PATH_SEACT_SPECS_PAKE_DEFAULT + "seatSpecs_";
+    public static final String PATH_CHAIR_ID_DEFAULT = PATH_DEFAULT + "chairId" + CSV;
+    public static final String PATH_STORAGE_DEFAULT = PATH_DEFAULT + "storage" + CSV;
+    public static final String PATH_STORAGE_ID_DEFAULT = PATH_DEFAULT + "storageId" + CSV;
+    public static final String PATH_SEAT_SPECS = PATH_DEFAULT + PATH_SEACT_SPECS_PAKE_DEFAULT + "seatSpecs_";
+    public static final String PATH_LUGGAGE = PATH_DEFAULT + PATH_LUGGAGE_PAGE_DEFAULT + "luggagePrice_";
+    public static final String PATH_LUGGAGE_ID = PATH_DEFAULT + PATH_LUGGAGE_PAGE_DEFAULT + "luggagePriceId_";
+    public static final String PATH_TICKET = PATH_DEFAULT + "ticket" + CSV;
+    public static final String PATH_TICKET_ID = PATH_DEFAULT + "ticketId" + CSV;
+    public static final String PATH_TICKET_DETAILS = PATH_DEFAULT + "ticketDetails" + CSV;
+    public static final String PATH_ACOUNT = PATH_DEFAULT + "acount" + CSV;
+    public static final String PATH_ACOUNT_ID = PATH_DEFAULT + "acountId" + CSV;
     public static final String TYPE_ORIGINAL = "original";
     public static final String TYPE_DELUXE = "deluxe";
     public static final String TYPE_SKY_BOSS = "skyBoss";
     public static final String PRICE = "price ";
-
+    public static final String TYPE_FORM = "from";
+    public static final String TYPE_DATE = "date";
+    public static final String TYPE_TO = "to";
     public static final String[] LIST_LINE_DEFAULT = {"A", "B", "C", "D", "E", "F", "G", "K", "H"};
-    public static final int[] LIST_CHAIR_PRICE_ID_DEFAULT={1,2,3};
+    public static final int[] LIST_CHAIR_PRICE_ID_DEFAULT = {1, 2, 3};
+    public static final String[] LIST_NOTIONNALITY = {"VIETNAME","ENLISH","CHINA"};
+    public static final String[] LIST_TITLE = {"Mr","Ms"};
 }

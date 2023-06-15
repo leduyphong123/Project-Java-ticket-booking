@@ -58,7 +58,7 @@ public class ChairPriceServiceImpl implements ChairPriceService {
 
 
     @Override
-    public List<ChairPrice> getAllByFlightId(int idFlightDetail) {
+    public List<ChairPrice> getAllByFlightDetailId(int idFlightDetail) {
         if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_CHAIR_PRICE_DEFAULT +
                 idFlightDetail + ConstTypeProject.CSV)) {
             return null;

@@ -28,7 +28,7 @@ public class SeatSpecs extends ChairDetails{
 
     @Override
     public String toString() {
-        return "SeatSpecificationsByFlight{"
+        return "SeatSpecs{"
                 +super.toString()+
                 "price=" + price +
                 ", status=" + status +

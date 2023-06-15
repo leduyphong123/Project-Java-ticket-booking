@@ -11,7 +11,9 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FlightServiceImpl implements FlightService {
 
@@ -118,6 +120,39 @@ public class FlightServiceImpl implements FlightService {
         }
         List<Integer> listIdDefault = IdDefaultHandle.readIdDefault(ConstTypeProject.PATH_FLIGHT_ID);
         return IdDefaultHandle.getMaxIdDefault(listIdDefault);
+    }
+
+    @Override
+    public Flight getFlightToId(int idFlight) {
+        List<Flight> flightList= getAllFlight();
+        for (Flight element: flightList){
+            if (element.getId()==idFlight){
+                return element;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<String> getArilineNameAll() {
+        List<Flight> flightList = getAllFlight();
+        Set<String> linketHashSet = new LinkedHashSet<>();
+        for (Flight element : flightList){
+            linketHashSet.add(element.getAirline_name());
+        }
+        List<String> resultList = new ArrayList<>(linketHashSet);
+        return resultList;
+    }
+
+    @Override
+    public String getArilineNameOne(int flightId) {
+        List<Flight> flightList = getAllFlight();
+        for (Flight elment :flightList){
+            if (elment.getId()==flightId){
+                return elment.getAirline_name();
+            }
+        }
+        return null;
     }
 
 }

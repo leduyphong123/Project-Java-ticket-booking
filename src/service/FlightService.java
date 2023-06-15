@@ -8,4 +8,10 @@ public interface FlightService {
     boolean saveFlight(Flight flight);
     List<Flight> getAllFlight();
     int getFlightId();
+
+    Flight getFlightToId(int idFlight);
+
+    List<String> getArilineNameAll();
+
+    String getArilineNameOne(int flightId);
 }
