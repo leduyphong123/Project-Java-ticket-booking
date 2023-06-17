@@ -11,16 +11,16 @@ public class ConstTypeProject {
     public static final String PATH_CHAIR_PAKE_PRICE_DEFAULT = "listChairPrice//";
     public static final String PATH_LUGGAGE_PAGE_DEFAULT = "listLuggagePrice//";
     public static final String PATH_FLIGHT_ID = PATH_DEFAULT + "flightId" + CSV;
-    public static final String PATH_FLIGHT_DEFAULT = PATH_DEFAULT + "flight" + CSV;
-    public static final String PATH_FLIGHT_DETAILS_DEFAULT = PATH_DEFAULT + "flightDetails" + CSV;
+    public static final String PATH_FLIGHT = PATH_DEFAULT + "flight" + CSV;
+    public static final String PATH_FLIGHT_DETAILS = PATH_DEFAULT + "flightDetails" + CSV;
     public static final String PATH_FLIGHT_DETAILS_ID = PATH_DEFAULT + "flightDetailsId" + CSV;
-    public static final String PATH_CHAIR_DEFAULT = PATH_DEFAULT + "chair" + CSV;
-    public static final String PATH_CHAIR_DETAILS_DEFAULT = PATH_DEFAULT + PATH_CHAIR_PAKE_DETAILS_DEFAULT + "chairDetails_";
-    public static final String PATH_CHAIR_DETAILS_DEFAULT_ID = PATH_DEFAULT + PATH_CHAIR_PAKE_DETAILS_DEFAULT + "chairDetailsId_";
-    public static final String PATH_CHAIR_PRICE_DEFAULT = PATH_DEFAULT + PATH_CHAIR_PAKE_PRICE_DEFAULT + "chairPrice_";
-    public static final String PATH_CHAIR_ID_DEFAULT = PATH_DEFAULT + "chairId" + CSV;
-    public static final String PATH_STORAGE_DEFAULT = PATH_DEFAULT + "storage" + CSV;
-    public static final String PATH_STORAGE_ID_DEFAULT = PATH_DEFAULT + "storageId" + CSV;
+    public static final String PATH_CHAIR = PATH_DEFAULT + "chair" + CSV;
+    public static final String PATH_CHAIR_DETAILS = PATH_DEFAULT + PATH_CHAIR_PAKE_DETAILS_DEFAULT + "chairDetails_";
+    public static final String PATH_CHAIR_DETAILS_ID = PATH_DEFAULT + PATH_CHAIR_PAKE_DETAILS_DEFAULT + "chairDetailsId_";
+    public static final String PATH_CHAIR_PRICE = PATH_DEFAULT + PATH_CHAIR_PAKE_PRICE_DEFAULT + "chairPrice_";
+    public static final String PATH_CHAIR_ID = PATH_DEFAULT + "chairId" + CSV;
+    public static final String PATH_STORAGE = PATH_DEFAULT + "storage" + CSV;
+    public static final String PATH_STORAGE_ID = PATH_DEFAULT + "storageId" + CSV;
     public static final String PATH_SEAT_SPECS = PATH_DEFAULT + PATH_SEACT_SPECS_PAKE_DEFAULT + "seatSpecs_";
     public static final String PATH_LUGGAGE = PATH_DEFAULT + PATH_LUGGAGE_PAGE_DEFAULT + "luggagePrice_";
     public static final String PATH_LUGGAGE_ID = PATH_DEFAULT + PATH_LUGGAGE_PAGE_DEFAULT + "luggagePriceId_";
@@ -36,8 +36,8 @@ public class ConstTypeProject {
     public static final String TYPE_FORM = "from";
     public static final String TYPE_DATE = "date";
     public static final String TYPE_TO = "to";
-    public static final String[] LIST_LINE_DEFAULT = {"A", "B", "C", "D", "E", "F", "G", "K", "H"};
-    public static final int[] LIST_CHAIR_PRICE_ID_DEFAULT = {1, 2, 3};
+    public static final String[] LIST_LINE = {"A", "B", "C", "D", "E", "F", "G", "K", "H"};
+    public static final int[] LIST_CHAIR_PRICE_ID = {1, 2, 3};
     public static final String[] LIST_NOTIONNALITY = {"VIETNAME","ENLISH","CHINA"};
     public static final String[] LIST_TITLE = {"Mr","Ms"};
 }

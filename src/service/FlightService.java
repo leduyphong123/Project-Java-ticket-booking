@@ -14,4 +14,9 @@ public interface FlightService {
     List<String> getArilineNameAll();
 
     String getArilineNameOne(int flightId);
+
+
+    boolean editFlight(Flight flightNew);
+
+    boolean deletFlight(int flightId);
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class SearchFromFlightDetailsImpl implements Search {
 
     @Override
-    public List<FlightDetails> searchFlightDetailsList(List<FlightDetails> flightDetailsList, String type) {
+    public List<FlightDetails> searchList(List<FlightDetails> flightDetailsList, String type) {
         List<FlightDetails> detailsList = new ArrayList<>();
         FlightService flightService =new FlightServiceImpl();
         for (FlightDetails element:flightDetailsList){

@@ -13,4 +13,10 @@ public interface LuggagePriceService {
 
 
     LuggagePrice getLPFromLPId(String airlineName, String luggagePriceId);
+
+    List<LuggagePrice> getAll(String arilineName);
+
+    boolean edit(String arilineName, String name, String valume, String price,String luggagePriceId);
+
+    boolean delete(String arilineName, String luggagePriceId);
 }

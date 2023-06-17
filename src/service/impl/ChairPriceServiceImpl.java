@@ -18,14 +18,14 @@ import java.util.List;
 public class ChairPriceServiceImpl implements ChairPriceService {
     @Override
     public boolean saveChairPrice(ChairPrice chairPrice, int idFlightDetail) {
-        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_CHAIR_PRICE_DEFAULT +
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_CHAIR_PRICE +
                  idFlightDetail + ConstTypeProject.CSV)) {
             return false;
         }
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-            fw = new FileWriter(ConstTypeProject.PATH_CHAIR_PRICE_DEFAULT +
+            fw = new FileWriter(ConstTypeProject.PATH_CHAIR_PRICE +
                      idFlightDetail + ConstTypeProject.CSV, true);
             bw = new BufferedWriter(fw);
             bw.write(String.valueOf(chairPrice.getId()));
@@ -59,7 +59,7 @@ public class ChairPriceServiceImpl implements ChairPriceService {
 
     @Override
     public List<ChairPrice> getAllByFlightDetailId(int idFlightDetail) {
-        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_CHAIR_PRICE_DEFAULT +
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_CHAIR_PRICE +
                 idFlightDetail + ConstTypeProject.CSV)) {
             return null;
         }
@@ -67,7 +67,7 @@ public class ChairPriceServiceImpl implements ChairPriceService {
         FileReader fr = null;
         BufferedReader br = null;
         try {
-            fr = new FileReader(ConstTypeProject.PATH_CHAIR_PRICE_DEFAULT +
+            fr = new FileReader(ConstTypeProject.PATH_CHAIR_PRICE +
                     idFlightDetail + ConstTypeProject.CSV);
             br = new BufferedReader(fr);
             String line;

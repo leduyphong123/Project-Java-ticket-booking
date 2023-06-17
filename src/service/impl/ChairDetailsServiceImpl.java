@@ -10,10 +10,7 @@ import service.ChairDetailsService;
 import service.FileHandleService;
 import service.builder.FlightBuilder;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
     @Override
     public boolean saveChairDetails(ChairDetails chairDetails, int flightId) {
         if (!FileHandleService.isFileEmtry(
-                ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT
+                ConstTypeProject.PATH_CHAIR_DETAILS
                         + flightId
                         + ConstTypeProject.CSV)) {
             return false;
@@ -32,7 +29,7 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
         BufferedWriter bw = null;
         try {
             fw = new FileWriter(
-                    ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT
+                    ConstTypeProject.PATH_CHAIR_DETAILS
                             + flightId
                             + ConstTypeProject.CSV, true);
             bw = new BufferedWriter(fw);
@@ -98,27 +95,27 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
                     .builder();
             saveChairDetails(chairDetails, flightId);
             IdDefaultHandle.writeIdDefault(getChairDetailsId(flightId)+1,
-                    ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT_ID
+                    ConstTypeProject.PATH_CHAIR_DETAILS_ID
                     + flightId
                     + ConstTypeProject.CSV);
         }
     }
 
     public int getChairDetailsId(int flightId) {
-        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT_ID
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_CHAIR_DETAILS_ID
                 + flightId
                 + ConstTypeProject.CSV)) {
             return 0;
         }
-        if (IdDefaultHandle.readIdDefault(ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT_ID
+        if (IdDefaultHandle.readIdDefault(ConstTypeProject.PATH_CHAIR_DETAILS_ID
                 + flightId
                 + ConstTypeProject.CSV).size()==0){
-            IdDefaultHandle.writeIdDefault(1,ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT_ID
+            IdDefaultHandle.writeIdDefault(1,ConstTypeProject.PATH_CHAIR_DETAILS_ID
                     + flightId
                     + ConstTypeProject.CSV);
             return 1;
         }
-        List<Integer> listIdDefault = IdDefaultHandle.readIdDefault(ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT_ID
+        List<Integer> listIdDefault = IdDefaultHandle.readIdDefault(ConstTypeProject.PATH_CHAIR_DETAILS_ID
                 + flightId
                 + ConstTypeProject.CSV);
         return IdDefaultHandle.getMaxIdDefault(listIdDefault);
@@ -131,7 +128,7 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
     @Override
     public List<ChairDetails> getAllByFlightId(int idFlight) {
         if (!FileHandleService.isFileEmtry(
-                ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT
+                ConstTypeProject.PATH_CHAIR_DETAILS
                         + idFlight
                         + ConstTypeProject.CSV)) {
             return null;
@@ -141,7 +138,7 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
         BufferedReader br = null;
         try {
             fr = new FileReader(
-                    ConstTypeProject.PATH_CHAIR_DETAILS_DEFAULT
+                    ConstTypeProject.PATH_CHAIR_DETAILS
                             + idFlight
                             + ConstTypeProject.CSV);
             br = new BufferedReader(fr);
@@ -176,6 +173,17 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
             }
         }
         return chairDetailsList;
+    }
+
+    @Override
+    public void deleteFile(int idFlight) {
+        FileHandleService.deleteFile(ConstTypeProject.PATH_CHAIR_DETAILS
+                + idFlight
+                + ConstTypeProject.CSV);
+        FileHandleService.deleteFile(ConstTypeProject.PATH_CHAIR_DETAILS_ID
+                + idFlight
+                + ConstTypeProject.CSV);
+
     }
 
 }

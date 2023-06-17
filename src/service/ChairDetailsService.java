@@ -12,4 +12,6 @@ public interface ChairDetailsService {
     void setIndexDefault();
 
     List<ChairDetails> getAllByFlightId(int idFlight);
+
+    void deleteFile(int idFlight);
 }

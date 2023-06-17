@@ -1,5 +1,7 @@
 package service.impl;
 
+import comparator.ComparatorIdFlight;
+import comparator.ComparatorIdFlightDetails;
 import constType.ConstTypeProject;
 import entity.Flight;
 import entity.FlightDetails;
@@ -14,18 +16,19 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FlightDetailsServiceImpl implements FlightDetailsService {
     @Override
     public boolean saveFlightDetails(FlightDetails flightDetails) {
-        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_FLIGHT_DETAILS_DEFAULT)) {
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_FLIGHT_DETAILS)) {
             return false;
         }
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-            fw = new FileWriter(ConstTypeProject.PATH_FLIGHT_DETAILS_DEFAULT, true);
+            fw = new FileWriter(ConstTypeProject.PATH_FLIGHT_DETAILS, true);
             bw = new BufferedWriter(fw);
             bw.write(String.valueOf(flightDetails.getId()));
             bw.write(",");
@@ -74,14 +77,14 @@ public class FlightDetailsServiceImpl implements FlightDetailsService {
 
     @Override
     public List<FlightDetails> getAllList() {
-        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_FLIGHT_DETAILS_DEFAULT)) {
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_FLIGHT_DETAILS)) {
             return null;
         }
         List<FlightDetails> flightDetailsList = new ArrayList<>();
         FileReader fr = null;
         BufferedReader br = null;
         try {
-            fr = new FileReader(ConstTypeProject.PATH_FLIGHT_DETAILS_DEFAULT);
+            fr = new FileReader(ConstTypeProject.PATH_FLIGHT_DETAILS);
             br = new BufferedReader(fr);
             String line;
             while ((line = br.readLine()) != null) {
@@ -127,4 +130,126 @@ public class FlightDetailsServiceImpl implements FlightDetailsService {
         }
         return -1;
     }
+
+    @Override
+    public boolean isIdExit(int flightDetailsId) {
+        List<FlightDetails> flightDetailsList = getAllList();
+        for(FlightDetails element:flightDetailsList){
+            if (element.getId()==flightDetailsId){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private FlightDetails getFlightDetailsToId(int flightDetailsId) {
+        List<FlightDetails> flightDetailsList = getAllList();
+        for (FlightDetails element : flightDetailsList){
+            if (element.getId()==flightDetailsId){
+                return element;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean editFlightDetails(int flightDetailsId, String date, long usedStorageValume) {
+        List<FlightDetails> flightDetailsList = getAllList();
+        FlightDetails flightDetails = getFlightDetailsToId(flightDetailsId);
+        int index=-1;
+        for (int i=0;i<flightDetailsList.size();i++){
+            if (flightDetailsList.get(i).getId()==flightDetailsId){
+                index = i;
+                break;
+            }
+        }
+        FlightDetails flightDetailsNew = new FlightDetailsBuilder()
+                .withIdBuilder(flightDetails.getId())
+                .withIdFlightBuilder(flightDetails.getIdFlight())
+                .withDateBuilder(date)
+                .withStorageValumeBuilder(flightDetails.getStorageValume())
+                .withUsedStorageValume(usedStorageValume)
+                .builder();
+        flightDetailsList.remove(index);
+        flightDetailsList.add(flightDetailsNew);
+        ComparatorIdFlightDetails comparatorIdFlightDetails = new ComparatorIdFlightDetails();
+        Collections.sort(flightDetailsList,comparatorIdFlightDetails);
+        return saveFlightDetailsList(flightDetailsList);
+    }
+
+    @Override
+    public boolean deleteFlightDetails(int flightDetailsId) {
+        List<FlightDetails> flightDetailsList = getAllList();
+        int index=-1;
+        for (int i=0;i<flightDetailsList.size();i++){
+            if (flightDetailsList.get(i).getId()==flightDetailsId){
+                index = i;
+                break;
+            }
+        }
+        flightDetailsList.remove(index);
+        ComparatorIdFlightDetails comparatorIdFlightDetails = new ComparatorIdFlightDetails();
+        Collections.sort(flightDetailsList,comparatorIdFlightDetails);
+        return saveFlightDetailsList(flightDetailsList);
+    }
+
+    @Override
+    public boolean isUsedStorageMax(int flightDetailsId, String usedStorageValume) {
+        List<FlightDetails> flightDetailsList = getAllList();
+        for (FlightDetails element :flightDetailsList){
+            if (element.getIdFlight()==flightDetailsId){
+                if (element.getStorageValume()>=Long.parseLong(usedStorageValume)){
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean saveFlightDetailsList(List<FlightDetails> flightDetailsList) {
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_FLIGHT_DETAILS)) {
+            return false;
+        }
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        try {
+            fw = new FileWriter(ConstTypeProject.PATH_FLIGHT_DETAILS, false);
+            bw = new BufferedWriter(fw);
+            for (FlightDetails element : flightDetailsList){
+                bw.write(String.valueOf(element.getId()));
+                bw.write(",");
+                bw.write(String.valueOf(element.getIdFlight()));
+                bw.write(",");
+                bw.write(element.getDate());
+                bw.write(",");
+                bw.write(String.valueOf(element.getStorageValume()));
+                bw.write(",");
+                bw.write(String.valueOf(element.getUsedStorageValume()));
+                bw.write(",");
+                bw.newLine();
+            }
+        } catch (Exception e) {
+            return false;
+        } finally {
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+            if (fw != null) {
+                try {
+                    fw.close();
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
 }

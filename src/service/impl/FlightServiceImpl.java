@@ -1,5 +1,6 @@
 package service.impl;
 
+import comparator.ComparatorIdFlight;
 import constType.ConstTypeProject;
 import entity.Flight;
 import service.FileHandleService;
@@ -10,22 +11,19 @@ import service.IdDefaultHandle;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class FlightServiceImpl implements FlightService {
 
     @Override
     public boolean saveFlight(Flight flight) {
-        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_FLIGHT_DEFAULT)) {
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_FLIGHT)) {
             return false;
         }
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-            fw = new FileWriter(ConstTypeProject.PATH_FLIGHT_DEFAULT, true);
+            fw = new FileWriter(ConstTypeProject.PATH_FLIGHT, true);
             bw = new BufferedWriter(fw);
             bw.write(String.valueOf(flight.getId()));
             bw.write(",");
@@ -64,14 +62,14 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> getAllFlight() {
-        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_FLIGHT_DEFAULT)) {
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_FLIGHT)) {
             return null;
         }
         List<Flight> flightList = new ArrayList<>();
         FileReader fr = null;
         BufferedReader br = null;
         try {
-            fr = new FileReader(ConstTypeProject.PATH_FLIGHT_DEFAULT);
+            fr = new FileReader(ConstTypeProject.PATH_FLIGHT);
             br = new BufferedReader(fr);
             String line;
             while ((line = br.readLine()) != null) {
@@ -153,6 +151,86 @@ public class FlightServiceImpl implements FlightService {
             }
         }
         return null;
+    }
+
+    public boolean saveFlightList(List<Flight> flightList) {
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_FLIGHT)) {
+            return false;
+        }
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        try {
+            fw = new FileWriter(ConstTypeProject.PATH_FLIGHT, false);
+            bw = new BufferedWriter(fw);
+            for(Flight element:flightList){
+                bw.write(String.valueOf(element.getId()));
+                bw.write(",");
+                bw.write(element.getFrom_location());
+                bw.write(",");
+                bw.write(element.getTo_location());
+                bw.write(",");
+                bw.write(String.valueOf(element.getAirline_id()));
+                bw.write(",");
+                bw.write(element.getAirline_name());
+                bw.write(",");
+                bw.write(element.getDeparture_time());
+                bw.write(",");
+                bw.write(element.getArrival_time());
+                bw.newLine();
+            }
+
+        } catch (Exception e) {
+            return false;
+        } finally {
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+            if (fw != null) {
+                try {
+                    fw.close();
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean editFlight(Flight flightNew) {
+        List<Flight> flightList = getAllFlight();
+        int index=-1;
+        for (int i=0;i<flightList.size();i++){
+            if (flightList.get(i).getId()==flightNew.getId()){
+                index = i;
+                break;
+            }
+        }
+        flightList.remove(index);
+        flightList.add(flightNew);
+        ComparatorIdFlight comparatorIdFlight = new ComparatorIdFlight();
+        Collections.sort(flightList,comparatorIdFlight);
+        return saveFlightList(flightList);
+    }
+
+    @Override
+    public boolean deletFlight(int flightId) {
+        List<Flight> flightList = getAllFlight();
+        int index=-1;
+        for (int i=0;i<flightList.size();i++){
+            if (flightList.get(i).getId()==flightId){
+                index = i;
+                break;
+            }
+        }
+        flightList.remove(index);
+        ComparatorIdFlight comparatorIdFlight = new ComparatorIdFlight();
+        Collections.sort(flightList,comparatorIdFlight);
+        return saveFlightList(flightList);
     }
 
 }

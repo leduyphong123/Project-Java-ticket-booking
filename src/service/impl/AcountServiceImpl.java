@@ -1,5 +1,7 @@
 package service.impl;
 
+import comparator.ComparatorIdAcount;
+import comparator.ComparatorIdFlight;
 import constType.ConstTypeProject;
 import entity.Acount;
 import entity.Flight;
@@ -14,6 +16,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AcountServiceImpl implements AcountService {
@@ -111,6 +114,64 @@ public class AcountServiceImpl implements AcountService {
         return null;
     }
 
+
+    @Override
+    public boolean deleteAcountId(int acountId) {
+        List<Acount> acountList = getAllAcount();
+        int index=-1;
+        for (int i=0;i<acountList.size();i++){
+            if (acountList.get(i).getId()==acountId){
+                index = i;
+                break;
+            }
+        }
+        acountList.remove(index);
+        ComparatorIdAcount comparatorIdAcount = new ComparatorIdAcount();
+        Collections.sort(acountList,comparatorIdAcount);
+        return saveAcountList(acountList);
+    }
+
+    private boolean saveAcountList(List<Acount> acountList) {
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_ACOUNT)) {
+            return false;
+        }
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        try {
+            fw = new FileWriter(ConstTypeProject.PATH_ACOUNT, false);
+            bw = new BufferedWriter(fw);
+            for(Acount element :acountList){
+                bw.write(String.valueOf(element.getId()));
+                bw.write(",");
+                bw.write(element.getEmail());
+                bw.write(",");
+                bw.write(element.getPassword());
+                bw.write(",");
+                bw.write(element.getType());
+                bw.newLine();
+            }
+        } catch (Exception e) {
+            return false;
+        } finally {
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+            if (fw != null) {
+                try {
+                    fw.close();
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
     public List<Acount> getAllAcount() {
         if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_ACOUNT)) {
             return null;
@@ -152,5 +213,21 @@ public class AcountServiceImpl implements AcountService {
             }
         }
         return acountList;
+    }
+
+    @Override
+    public boolean newPassworld(Acount acountSession) {
+        List<Acount> acountList =getAllAcount();
+        int index=-1;
+        for (int i=0;i<acountList.size();i++){
+            if (acountList.get(i).getId()==acountSession.getId()){
+                index=i;
+            }
+        }
+        acountList.remove(index);
+        acountList.add(acountSession);
+        ComparatorIdAcount comparatorIdAcount = new ComparatorIdAcount();
+        Collections.sort(acountList,comparatorIdAcount);
+        return saveAcountList(acountList);
     }
 }

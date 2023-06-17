@@ -9,4 +9,5 @@ public interface ChairPriceService {
 
 
     List<ChairPrice> getAllByFlightDetailId(int idFlightDetail);
+
 }

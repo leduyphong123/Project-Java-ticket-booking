@@ -1,12 +1,19 @@
 package service.impl;
 
 import constType.ConstTypeProject;
+import entity.Ticket;
 import entity.TiketDetails;
 import service.FileHandleService;
 import service.TicketDetailService;
+import service.builder.TicketBuilder;
+import service.builder.TiketDetailsBuilder;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TicketDetailsServiceImpl implements TicketDetailService {
     @Override
@@ -54,5 +61,63 @@ public class TicketDetailsServiceImpl implements TicketDetailService {
             }
         }
         return true;
+    }
+
+    @Override
+    public TiketDetails getTicketDetailsUser(int ticketId) {
+        List<TiketDetails> tiketDetailsList =getAll();
+        for (TiketDetails element : tiketDetailsList){
+            if (element.getTicketId()==ticketId){
+                return element;
+            }
+        }
+        return null;
+    }
+
+    private List<TiketDetails> getAll() {
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_TICKET_DETAILS)) {
+            return null;
+        }
+        List<TiketDetails> tiketDetailsList = new ArrayList<>();
+        FileReader fr = null;
+        BufferedReader br = null;
+        try {
+            fr = new FileReader(ConstTypeProject.PATH_TICKET_DETAILS);
+            br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] result = line.split(",");
+                TiketDetails tiketDetails = new TiketDetailsBuilder()
+                        .withTicketIdBuilder(Integer.parseInt(result[0]))
+                        .withEmailBuilder(result[1])
+                        .withTitleBuilder(result[2])
+                        .withLastName(result[3])
+                        .withFirtName(result[4])
+                        .withDateOfBirthBuilder(result[5])
+                        .withNationalityBuilder(result[6])
+                        .withPayment(result[7])
+                        .builder();
+                tiketDetailsList.add(tiketDetails);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+            if (fr != null) {
+                try {
+                    fr.close();
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        }
+        return tiketDetailsList;
     }
 }

@@ -12,4 +12,14 @@ public interface FlightDetailsService {
     List<FlightDetails> getAllList();
 
     int getFlightId(String flightDetailsId);
+
+    boolean isIdExit(int flightDetailsId);
+
+
+
+    boolean editFlightDetails(int flightDetailsId, String date, long usedStorageValume);
+
+    boolean deleteFlightDetails(int flightDetailsId);
+
+    boolean isUsedStorageMax(int flightDetailsId, String usedStorageValume);
 }
