@@ -10,32 +10,32 @@ public class SeatSpecsBuilder {
     private String chairName;
     private String type;
 
-    public SeatSpecsBuilder withIdBuilder(int id) {
+    public SeatSpecsBuilder withId(int id) {
         this.id=id;
         return this;
     }
 
-    public SeatSpecsBuilder withIdChairBuilder(int idChair) {
+    public SeatSpecsBuilder withIdChair(int idChair) {
         this.idChair=idChair;
         return this;
     }
 
-    public SeatSpecsBuilder withChairNameBuilder(String chairName) {
+    public SeatSpecsBuilder withChairName(String chairName) {
         this.chairName=chairName;
         return this;
     }
 
-    public SeatSpecsBuilder withTypeBuilder(String type) {
+    public SeatSpecsBuilder withType(String type) {
         this.type = type;
         return this;
     }
 
-    public SeatSpecsBuilder withPriceBuilder(long price){
+    public SeatSpecsBuilder withPrice(long price){
         this.price=price;
         return this;
     }
 
-    public SeatSpecsBuilder withStatusBuilder(boolean status) {
+    public SeatSpecsBuilder withStatus(boolean status) {
         this.status=status;
         return this;
     }

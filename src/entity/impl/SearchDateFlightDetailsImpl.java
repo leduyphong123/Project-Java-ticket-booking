@@ -1,10 +1,7 @@
 package entity.impl;
 
-import entity.Flight;
 import entity.FlightDetails;
 import entity.Search;
-import service.FlightService;
-import service.impl.FlightServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;

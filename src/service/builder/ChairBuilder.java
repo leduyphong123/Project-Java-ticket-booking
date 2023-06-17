@@ -7,17 +7,17 @@ public class ChairBuilder {
     private int idFlight;
     private int lineQuantity;
 
-    public ChairBuilder withIdBuilder(int id) {
+    public ChairBuilder withId(int id) {
         this.id = id;
         return this;
     }
 
-    public ChairBuilder withIdFlightBuilder(int idFlight) {
+    public ChairBuilder withIdFlight(int idFlight) {
         this.idFlight = idFlight;
         return this;
     }
 
-    public ChairBuilder withLineQuantityBuilder(int lineQuantity) {
+    public ChairBuilder withLineQuantity(int lineQuantity) {
         this.lineQuantity = lineQuantity;
         return this;
     }

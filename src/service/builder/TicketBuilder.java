@@ -5,6 +5,7 @@ import entity.Ticket;
 public class TicketBuilder {
     private int id;
     private int userId;
+    private String title;
     private String fullName;
     private long valume;
     private String airlineCode;
@@ -12,12 +13,12 @@ public class TicketBuilder {
     private String airlineTime;
     private boolean status;
 
-    public TicketBuilder withIdBuilder(int id) {
+    public TicketBuilder withId(int id) {
         this.id = id;
         return this;
     }
 
-    public TicketBuilder withUserIdBuilder(int userId) {
+    public TicketBuilder withUserId(int userId) {
         this.userId = userId;
         return this;
     }
@@ -27,7 +28,7 @@ public class TicketBuilder {
         return this;
     }
 
-    public TicketBuilder withValumeBuilder(long valume) {
+    public TicketBuilder withValume(long valume) {
         this.valume=valume;
         return this;
     }
@@ -37,22 +38,27 @@ public class TicketBuilder {
         return this;
     }
 
-    public TicketBuilder withDepartureTimeBuilder(String departureTime) {
+    public TicketBuilder withDepartureTime(String departureTime) {
         this.departureTime=departureTime;
         return this;
     }
 
-    public TicketBuilder withAirlineTimeBuilder(String arrivalTime) {
+    public TicketBuilder withAirlineTime(String arrivalTime) {
         this.airlineTime=arrivalTime;
         return this;
     }
 
-    public TicketBuilder withStatusBuilder(boolean status) {
+    public TicketBuilder withStatus(boolean status) {
         this.status=status;
         return this;
     }
-
-    public Ticket builder() {
-        return new Ticket(id,userId,fullName,valume,airlineCode,departureTime,airlineTime,status);
+    public TicketBuilder withTitle(String title) {
+        this.title = title;
+        return this;
     }
+    public Ticket builder() {
+        return new Ticket(id,userId,title,fullName,valume,airlineCode,departureTime,airlineTime,status);
+    }
+
+
 }

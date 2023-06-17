@@ -1,7 +1,5 @@
 package service;
 
-import constType.ConstTypeProject;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -80,4 +78,5 @@ public class IdDefaultHandle {
         }
         return listChairId;
     }
+
 }

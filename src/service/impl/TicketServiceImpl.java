@@ -2,12 +2,10 @@ package service.impl;
 
 import comparator.ComparatorIdTicket;
 import constType.ConstTypeProject;
-import entity.Flight;
 import entity.Ticket;
 import service.FileHandleService;
 import service.IdDefaultHandle;
 import service.TicketService;
-import service.builder.FlightBuilder;
 import service.builder.TicketBuilder;
 
 import java.io.BufferedReader;
@@ -32,6 +30,8 @@ public class TicketServiceImpl implements TicketService {
             bw.write(String.valueOf(ticket.getId()));
             bw.write(",");
             bw.write(String.valueOf(ticket.getUserId()));
+            bw.write(",");
+            bw.write(ticket.getTitle());
             bw.write(",");
             bw.write(ticket.getFullName());
             bw.write(",");
@@ -71,8 +71,8 @@ public class TicketServiceImpl implements TicketService {
         if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_TICKET_ID)) {
             return 0;
         }
-        if (IdDefaultHandle.readIdDefault(ConstTypeProject.PATH_TICKET_ID).size()==0){
-            IdDefaultHandle.writeIdDefault(1,ConstTypeProject.PATH_TICKET_ID);
+        if (IdDefaultHandle.readIdDefault(ConstTypeProject.PATH_TICKET_ID).size() == 0) {
+            IdDefaultHandle.writeIdDefault(1, ConstTypeProject.PATH_TICKET_ID);
             return 1;
         }
         List<Integer> listIdDefault = IdDefaultHandle.readIdDefault(ConstTypeProject.PATH_TICKET_ID);
@@ -94,14 +94,15 @@ public class TicketServiceImpl implements TicketService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 Ticket ticket = new TicketBuilder()
-                        .withIdBuilder(Integer.parseInt(result[0]))
-                        .withUserIdBuilder(Integer.parseInt(result[1]))
-                        .withFullName(result[2])
-                        .withValumeBuilder(Long.parseLong(result[3]))
-                        .withAirlineCode(result[4])
-                        .withDepartureTimeBuilder(result[5])
-                        .withAirlineTimeBuilder(result[6])
-                        .withStatusBuilder(Boolean.parseBoolean(result[7]))
+                        .withId(Integer.parseInt(result[0]))
+                        .withUserId(Integer.parseInt(result[1]))
+                        .withTitle(result[2])
+                        .withFullName(result[3])
+                        .withValume(Long.parseLong(result[4]))
+                        .withAirlineCode(result[5])
+                        .withDepartureTime(result[6])
+                        .withAirlineTime(result[7])
+                        .withStatus(Boolean.parseBoolean(result[8]))
                         .builder();
                 ticketList.add(ticket);
             }
@@ -130,8 +131,8 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public boolean isExit(int ticketId) {
         List<Ticket> ticketList = getAll();
-        for (Ticket element : ticketList){
-            if (element.getId()==ticketId){
+        for (Ticket element : ticketList) {
+            if (element.getId() == ticketId) {
                 return true;
             }
         }
@@ -141,23 +142,23 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public boolean checkIn(int ticketId) {
         List<Ticket> ticketList = getAll();
-        if (!isExit(ticketId)){
+        if (!isExit(ticketId)) {
             return false;
         }
-        int index=-1;
-        Ticket tempTicket=null;
-        for(int i=0;i<ticketList.size();i++){
-            if (ticketList.get(i).getId()==ticketId){
-                index=i;
-                tempTicket=ticketList.get(i);
+        int index = -1;
+        Ticket tempTicket = null;
+        for (int i = 0; i < ticketList.size(); i++) {
+            if (ticketList.get(i).getId() == ticketId) {
+                index = i;
+                tempTicket = ticketList.get(i);
                 break;
             }
         }
         ticketList.remove(index);
-        tempTicket.setStatus(false);
+        tempTicket.setStatus(true);
         ticketList.add(tempTicket);
         ComparatorIdTicket comparatorIdTicket = new ComparatorIdTicket();
-        Collections.sort(ticketList,comparatorIdTicket);
+        Collections.sort(ticketList, comparatorIdTicket);
         return saveTicketList(ticketList);
     }
 
@@ -165,8 +166,8 @@ public class TicketServiceImpl implements TicketService {
     public List<Ticket> getTicketUser(int userId) {
         List<Ticket> ticketList = getAll();
         List<Ticket> temp = new ArrayList<>();
-        for (Ticket element : ticketList ){
-            if (element.getUserId()==userId){
+        for (Ticket element : ticketList) {
+            if (element.getUserId() == userId) {
                 temp.add(element);
             }
         }
@@ -182,7 +183,7 @@ public class TicketServiceImpl implements TicketService {
         try {
             fw = new FileWriter(ConstTypeProject.PATH_TICKET, true);
             bw = new BufferedWriter(fw);
-            for (Ticket element : ticketList){
+            for (Ticket element : ticketList) {
                 bw.write(String.valueOf(element.getId()));
                 bw.write(",");
                 bw.write(String.valueOf(element.getUserId()));

@@ -1,15 +1,12 @@
 package service.impl;
 
 import comparator.ComparatorIdAcount;
-import comparator.ComparatorIdFlight;
 import constType.ConstTypeProject;
 import entity.Acount;
-import entity.Flight;
 import service.AcountService;
 import service.FileHandleService;
 import service.IdDefaultHandle;
 import service.builder.AcountBuilder;
-import service.builder.FlightBuilder;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -33,6 +30,8 @@ public class AcountServiceImpl implements AcountService {
             bw.write(String.valueOf(acount.getId()));
             bw.write(",");
             bw.write(acount.getEmail());
+            bw.write(",");
+            bw.write(acount.getFullName());
             bw.write(",");
             bw.write(acount.getPassword());
             bw.write(",");
@@ -186,10 +185,11 @@ public class AcountServiceImpl implements AcountService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 Acount acount = new AcountBuilder()
-                        .withIdBuilder(Integer.parseInt(result[0]))
-                        .withEmailBuilder(result[1])
-                        .withPasswordBuilder(result[2])
-                        .withTypeBuilder(result[3])
+                        .withId(Integer.parseInt(result[0]))
+                        .withEmail(result[1])
+                        .withFullName(result[2])
+                        .withPassword(result[3])
+                        .withType(result[4])
                         .builder();
                 acountList.add(acount);
             }

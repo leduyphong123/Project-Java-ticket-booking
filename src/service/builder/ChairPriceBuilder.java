@@ -7,17 +7,17 @@ public class ChairPriceBuilder {
     private String type;
     private long price;
 
-    public ChairPriceBuilder withIdBuilder(int id) {
+    public ChairPriceBuilder withId(int id) {
         this.id = id;
         return this;
     }
 
-    public ChairPriceBuilder withTypeBuilder(String type) {
+    public ChairPriceBuilder withType(String type) {
         this.type =type;
         return this;
     }
 
-    public ChairPriceBuilder withPriceBuilder(long price) {
+    public ChairPriceBuilder withPrice(long price) {
         this.price = price;
         return this;
     }

@@ -1,6 +1,5 @@
 package comparator;
 
-import entity.Flight;
 import entity.FlightDetails;
 
 import java.util.Comparator;

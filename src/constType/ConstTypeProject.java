@@ -40,4 +40,7 @@ public class ConstTypeProject {
     public static final int[] LIST_CHAIR_PRICE_ID = {1, 2, 3};
     public static final String[] LIST_NOTIONNALITY = {"VIETNAME","ENLISH","CHINA"};
     public static final String[] LIST_TITLE = {"Mr","Ms"};
+    public static final String TYPE_ADMIN = "admin";
+    public static final String TYPE_STAFF = "staff";
+    public static final String TYPE_USER = "user";
 }

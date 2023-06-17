@@ -3,17 +3,27 @@ package entity;
 public class Acount {
     private int id;
     private String email;
+    private String fullName;
     private String password;
     private String type;
 
     public Acount() {
     }
 
-    public Acount(int id, String email, String password, String type) {
+    public Acount(int id, String email,String fullName ,String password, String type) {
         this.id = id;
         this.email = email;
+        this.fullName=fullName;
         this.password = password;
         this.type = type;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public int getId() {
@@ -51,11 +61,8 @@ public class Acount {
     @Override
     public String toString() {
         return "Acount{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", type='" + type + '\'' +
+                "email='" + email + '\'' +
+                ", fullName='" + fullName + '\'' +
                 '}';
     }
-
 }

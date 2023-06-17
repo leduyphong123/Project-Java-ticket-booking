@@ -9,17 +9,17 @@ public class LuggagePriceBuilder {
 
     private long price;
 
-    public LuggagePriceBuilder withIdBuilder(int id) {
+    public LuggagePriceBuilder withId(int id) {
         this.id=id;
         return this;
     }
 
-    public LuggagePriceBuilder withNameBuilder(String name) {
+    public LuggagePriceBuilder withName(String name) {
         this.name=name;
         return this;
     }
 
-    public LuggagePriceBuilder withPriceBuilder(long price) {
+    public LuggagePriceBuilder withPrice(long price) {
         this.price=price;
         return this;
     }
@@ -28,7 +28,7 @@ public class LuggagePriceBuilder {
         return new LuggagePrice(id,name,valume,price);
     }
 
-    public LuggagePriceBuilder withValumeBuilder(long valume) {
+    public LuggagePriceBuilder withValume(long valume) {
         this.valume=valume;
         return this;
     }

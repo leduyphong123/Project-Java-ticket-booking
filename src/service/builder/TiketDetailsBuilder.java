@@ -12,17 +12,17 @@ public class TiketDetailsBuilder {
     private String nationality;
     private String payment;
 
-    public TiketDetailsBuilder withTicketIdBuilder(int ticketId) {
+    public TiketDetailsBuilder withTicketId(int ticketId) {
         this.ticketId=ticketId;
         return this;
     }
 
-    public TiketDetailsBuilder withEmailBuilder(String email) {
+    public TiketDetailsBuilder withEmail(String email) {
         this.email=email;
         return this;
     }
 
-    public TiketDetailsBuilder withTitleBuilder(String title) {
+    public TiketDetailsBuilder withTitle(String title) {
         this.title=title;
         return this;
     }
@@ -37,12 +37,12 @@ public class TiketDetailsBuilder {
         return this;
     }
 
-    public TiketDetailsBuilder withDateOfBirthBuilder(String dateOfBirth) {
+    public TiketDetailsBuilder withDateOfBirth(String dateOfBirth) {
         this.dateOfBirth=dateOfBirth;
         return this;
     }
 
-    public TiketDetailsBuilder withNationalityBuilder(String nationality) {
+    public TiketDetailsBuilder withNationality(String nationality) {
         this.nationality=nationality;
         return this;
     }

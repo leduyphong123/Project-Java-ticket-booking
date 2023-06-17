@@ -3,6 +3,7 @@ package entity;
 public class Ticket {
     private int id;
     private int userId;
+    private String title;
     private String fullName;
     private long valume;
     private String airlineCode;
@@ -10,9 +11,10 @@ public class Ticket {
     private String airlineTime;
     private boolean status;
 
-    public Ticket(int id, int userId, String fullName, long valume, String airlineCode, String departureTime, String airlineTime, boolean status) {
+    public Ticket(int id, int userId,String title ,String fullName, long valume, String airlineCode, String departureTime, String airlineTime, boolean status) {
         this.id = id;
         this.userId = userId;
+        this.title=title;
         this.fullName = fullName;
         this.valume = valume;
         this.airlineCode = airlineCode;
@@ -22,6 +24,18 @@ public class Ticket {
     }
 
     public Ticket() {
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isStatus() {
+        return status;
     }
 
     public int getId() {
@@ -92,9 +106,10 @@ public class Ticket {
     public String toString() {
         return "Ticket{" +
                 "id=" + id +
-                ", UserId=" + userId +
+                ", userId=" + userId +
+                ", title='" + title + '\'' +
                 ", fullName='" + fullName + '\'' +
-                ", valume='" + valume + '\'' +
+                ", valume=" + valume +
                 ", airlineCode='" + airlineCode + '\'' +
                 ", departureTime='" + departureTime + '\'' +
                 ", airlineTime='" + airlineTime + '\'' +

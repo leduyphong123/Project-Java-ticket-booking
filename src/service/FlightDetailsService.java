@@ -22,4 +22,8 @@ public interface FlightDetailsService {
     boolean deleteFlightDetails(int flightDetailsId);
 
     boolean isUsedStorageMax(int flightDetailsId, String usedStorageValume);
+
+
+    boolean newUsedStorageValume(String flightDetailsId, long valume);
+
 }

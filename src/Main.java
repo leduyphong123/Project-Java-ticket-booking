@@ -1,6 +1,5 @@
 import constType.ConstMessenger;
 import constType.ConstRegex;
-import constType.ConstTypeProject;
 import entity.*;
 import regex.*;
 import service.*;
@@ -8,9 +7,13 @@ import service.builder.*;
 import service.factory.SearchFactory;
 import service.factory.SearchTicketFactory;
 import service.impl.*;
-import comparator.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+import static constType.ConstTypeProject.*;
 
 public class Main {
     public static Scanner input = new Scanner(System.in);
@@ -28,80 +31,124 @@ public class Main {
     public static Acount acountSession = null;
 
     public static void main(String[] args) {
-        int keys;
+        newRegisterPage(TYPE_ADMIN);
+
+//        int keys;
+//        do {
+//            if (acountSession != null) {
+//                if (acountSession.getType().equals(TYPE_USER)) {
+//                    viewMenuUser();
+//                } else if (acountSession.getType().equals(TYPE_ADMIN)) {
+//                    viewMenuAdmin();
+//                } else if (acountSession.getType().equals(TYPE_STAFF)) {
+//                    viewMenuStaff();
+//                }
+//            }
+//            System.out.println("Menu");
+//            System.out.println("1.Register");
+//            System.out.println("2.Login");
+//            System.out.println("3.Book ticket");
+//            System.out.println("0.Exit");
+//            keys = input.nextInt();
+//            input.nextLine();
+//            switch (keys) {
+//                case 1:
+//                    newRegisterPage(TYPE_USER);
+//                    break;
+//                case 2:
+//                    newLoginPage();
+//                    break;
+//                case 3:
+//                    viewBookTicket();
+//                    break;
+//                case 0:
+//                default:
+//                    break;
+//            }
+//        } while (keys != 0);
+
+    }
+
+    private static void viewMenuUser() {
+        int key;
         do {
-            if (acountSession != null) {
-                if (acountSession.getType().equals("user")) {
-                    viewMenuUser();
-                } else if (acountSession.getType().equals("admin")) {
-                    viewMenuAdmin();
-                } else if (acountSession.getType().equals("staff")) {
-                    viewMenuStaff();
-                }
-            }
             System.out.println("Menu");
-            System.out.println("1.Register");
-            System.out.println("2.Login");
-            System.out.println("3.Book ticket");
-            System.out.println("0.Exit");
-            keys = input.nextInt();
+            System.out.println("1.Book ticket");
+            System.out.println("2.History ticket");
+            System.out.println("3.Profile");
+            System.out.println("4.New PassWord");
+            System.out.println("5.Logout");
+            key = input.nextInt();
             input.nextLine();
-            switch (keys) {
+            switch (key) {
                 case 1:
-                    newRegisterPage("user");
-                    break;
-                case 2:
-                    newLoginPage();
-                    break;
-                case 3:
                     viewBookTicket();
                     break;
-                case 0:
-                default:
+                case 2:
+                    showHistoryTicketUser();
+                    break;
+                case 3:
+                    System.out.println(acountSession);
+                    break;
+                case 4:
+                    int keys=-1;
+                    while (keys!=0){
+                        showMessengerEnterInformation("old password");
+                        String passworlOld= input.nextLine();
+                        if (acountSession.getPassword().equals(passworlOld)){
+                            keys=0;
+                        }else {
+                            showMessengerError("old passworld false");
+                        }
+                    }
+                    String password = getPassword();
+                    acountSession.setPassword(password);
+                    boolean isResult= acountService.newPassworld(acountSession);
+                    if (isResult){
+                        System.out.println("New passwold succes");
+                    }else {
+                        System.out.println("error");
+                    }
+
+                    break;
+                case 5:
+                    logout();
+                    key = 0;
                     break;
             }
-        } while (keys != 0);
-
-
-//        newFlightPage();
-//        showFlightPage();
-//        newStoragePage(1);
-//        newflightDetailsPage();
-//        newflightDetailsPage();
-//        newRegisterPage("user");
-//        newLoginPage();
-
+        } while (key != 0);
     }
-
-    private static void showMenuFlightDetails() {
-        int keys;
-        System.out.println("Menu show flight details");
-        System.out.println("1. show get date");
-        System.out.println("2. show get all");
-        System.out.println("0. exit");
-        keys = input.nextInt();
-        input.nextLine();
-        List<FlightDetails> flightDetailsList = flightDetailsService.getAllList();
-        switch (keys) {
-            case 1:
-                String date = isCheckDateInputRegex(ConstTypeProject.TYPE_DATE);
-                Search searchDate = SearchFactory.getSearchFatory(ConstTypeProject.TYPE_DATE);
-                List<FlightDetails> detailsListDate = searchDate.searchList(flightDetailsList, date);
-                for (FlightDetails element : detailsListDate) {
-                    System.out.println(element);
-                }
-                break;
-            case 2:
-                for (FlightDetails element : flightDetailsList) {
-                    System.out.println(element);
-                }
-                break;
-            case 0:
-            default:
-                break;
-        }
+    private static void viewMenuAdmin() {
+        int key;
+        do {
+            System.out.println("Menu");
+            System.out.println("1.Flight");
+            System.out.println("2.Storage");
+            System.out.println("3.Chair");
+            System.out.println("4.Account");
+            System.out.println("5.Logout");
+            key = input.nextInt();
+            input.nextLine();
+            switch (key) {
+                case 1:
+                    flightPageAdmin();
+                    break;
+                case 2:
+                    storagePageAdmin();
+                    break;
+                case 3:
+                    chairPageAdmin();
+                    break;
+                case 4:
+                    acountPageAdmin();
+                    break;
+                case 5:
+                    logout();
+                    key = 0;
+                    break;
+            }
+        } while (key != 0);
     }
-
     private static void viewMenuStaff() {
         int key;
         do {
@@ -131,6 +178,39 @@ public class Main {
                     break;
             }
         } while (key != 0);
+    }
+    private static void showMenuFlightDetails() {
+        int keys;
+        do {
+            System.out.println("Menu show flight details");
+            System.out.println("1. show get date");
+            System.out.println("2. show get all");
+            System.out.println("0. exit");
+            keys = Integer.parseInt(isCheckNumberRegex("key"));
+            List<FlightDetails> flightDetailsList = flightDetailsService.getAllList();
+            switch (keys) {
+                case 1:
+                    String date = isCheckDateInputRegex(TYPE_DATE);
+                    Search searchDate = SearchFactory.getSearchFatory(TYPE_DATE);
+                    List<FlightDetails> detailsListDate = searchDate.searchList(flightDetailsList, date);
+                    if (detailsListDate.size()==0){
+                        System.out.println("No flight details list");
+                        break;
+                    }
+                    for (FlightDetails element : detailsListDate) {
+                        System.out.println(element);
+                    }
+                    break;
+                case 2:
+                    for (FlightDetails element : flightDetailsList) {
+                        System.out.println(element);
+                    }
+                    break;
+                default:
+                    keys=0;
+                    break;
+            }
+        }while (keys!=0);
     }
 
     private static void ticketPageStaff() {
@@ -200,6 +280,9 @@ public class Main {
     }
 
     private static void showTicket(List<Ticket> ticketList) {
+        if (ticketList.size()==0){
+            System.out.println("No ticket list");
+        }
         for (Ticket element : ticketList) {
             System.out.println(element);
         }
@@ -254,7 +337,7 @@ public class Main {
 
             boolean result = luggagePService.delete(arilineName, luggagePriceId);
             if (result) {
-                System.out.println("Edit succes");
+                System.out.println("Delete succes");
             } else {
                 showMessengerError("error");
             }
@@ -323,15 +406,24 @@ public class Main {
                     break;
                 case 3:
                     showMenuFlightDetails();
+                    break;
                 case 4:
                     editFlightDetailsPageStaff();
+                    break;
                 case 5:
                     int flightDetailsId = Integer.parseInt(isCheckNumberRegex("flight details id"));
                     boolean isIdExit = flightDetailsService.isIdExit(flightDetailsId);
                     if (!isIdExit) {
                         showMessengerError("Not flight details id");
+                        break;
                     }
-                    flightDetailsService.deleteFlightDetails(flightDetailsId);
+                    boolean isResult = flightDetailsService.deleteFlightDetails(flightDetailsId);
+                    if (isResult){
+                        System.out.println("Delete succes");
+                    }else {
+                        showMessengerError("error");
+                    }
+                    break;
                 case 0:
                     keys = 0;
                     break;
@@ -369,116 +461,37 @@ public class Main {
         }
     }
 
-    private static void viewMenuUser() {
-        int key;
-        do {
-            System.out.println("Menu");
-            System.out.println("1.Book ticket");
-            System.out.println("2.History ticket");
-            System.out.println("3.Profile");
-            System.out.println("4.New PassWord");
-            System.out.println("5.Logout");
-            System.out.println("0.Exit");
-            key = input.nextInt();
-            input.nextLine();
-            switch (key) {
-                case 1:
-                    viewBookTicket();
-                    break;
-                case 2:
-                    showTicketUser();
-                    break;
-                case 3:
-                    System.out.println(acountSession);
-                    break;
-                case 4:
-                    int keys=-1;
-                    while (keys!=0){
-                        showMessengerEnterInformation("old password");
-                        String passworlOld= input.nextLine();
-                        if (acountSession.getPassword().equals(passworlOld)){
-                            keys=0;
-                        }else {
-                            showMessengerError("old passworld false");
-                        }
-                    }
-                    String password = getPassword();
-                    acountSession.setPassword(password);
-                    boolean isResult= acountService.newPassworld(acountSession);
-                    if (isResult){
-                        System.out.println("New passwold succes");
-                    }else {
-                        System.out.println("error");
-                    }
 
-                    break;
-                case 5:
-                    logout();
-                    key = 0;
-                    break;
-                case 0:
-                default:
-                    break;
-            }
-        } while (key != 0);
-    }
 
-    private static void showTicketUser() {
+    private static void showHistoryTicketUser() {
         List<Ticket> ticket = ticketService.getTicketUser(acountSession.getId());
+        if (ticket.size()==0){
+            System.out.println("No history ticket");
+            return;
+        }
         showTicket(ticket);
-        int keys;
-        do {
-            System.out.println("Do you want to see ticket details?");
-            System.out.println("1. Yes");
-            System.out.println("0. No");
-            keys = Integer.parseInt(isCheckNumberRegex("keys"));
-            switch (keys) {
-                case 1:
-                    int ticketId = Integer.parseInt(isCheckNumberRegex("ticket id"));
-                    TiketDetails tiketDetails = ticketDetailService.getTicketDetailsUser(ticketId);
-                    System.out.println(tiketDetails);
-                    break;
-                default:
-                    break;
-            }
-        } while (keys != 0);
-    }
+//         keys;
+//        do {
+        System.out.println("Do you want to see ticket details?");
+        System.out.println("1. Yes");
+        System.out.println("0. No");
+        int keys = Integer.parseInt(isCheckNumberRegex("1/0"));
+        if (keys==1){
+            int ticketId = Integer.parseInt(isCheckNumberRegex("ticket id"));
+            TiketDetails tiketDetails = ticketDetailService.getTicketDetailsUser(ticketId);
+            System.out.println(tiketDetails);
+        }
 
-
-    private static void viewMenuAdmin() {
-        int key;
-        do {
-            System.out.println("Menu");
-            System.out.println("1.Flight");
-            System.out.println("2.Storage");
-            System.out.println("3.Chair");
-            System.out.println("4.Account");
-            System.out.println("5.Logout");
-            System.out.println("0.Exit");
-            key = input.nextInt();
-            input.nextLine();
-            switch (key) {
-                case 1:
-                    flightPageAdmin();
-                    break;
-                case 2:
-                    storagePageAdmin();
-                    break;
-                case 3:
-                    chairPageAdmin();
-                    break;
-                case 4:
-                    acountPageAdmin();
-                    break;
-                case 5:
-                    logout();
-                    key = 0;
-                    break;
-                case 0:
-                default:
-                    break;
-            }
-        } while (key != 0);
+//            switch (keys) {
+//                case 1:
+//
+//                    keys=0;
+//                    break;
+//                default:
+//                    keys=0;
+//                    break;
+//            }
+//        } while (keys != 0);
     }
 
     private static void acountPageAdmin() {
@@ -496,7 +509,7 @@ public class Main {
                     showAcountPageAdmin();
                     break;
                 case 2:
-                    newRegisterPage("staff");
+                    newRegisterPage(TYPE_STAFF);
                     break;
                 case 3:
                     String id = isCheckNumberRegex("acount id");
@@ -518,7 +531,14 @@ public class Main {
 
     private static void showAcountPageAdmin() {
         List<Acount> acountList = acountService.getAllAcount();
+        if (acountList.size()<=1){
+            System.out.println("No acount list");
+            return;
+        }
         for (Acount element : acountList) {
+            if (element.getType().equals(TYPE_ADMIN)){
+                continue;
+            }
             System.out.println(element);
         }
     }
@@ -569,6 +589,10 @@ public class Main {
 
     private static void showChairPageAdmin() {
         List<Chair> chairList = chairService.getAll();
+        if (chairList.size()==0){
+            System.out.println("No chair list");
+            return;
+        }
         for (Chair element : chairList) {
             System.out.println(element);
         }
@@ -616,6 +640,10 @@ public class Main {
 
     private static void showStoragePageAdmin() {
         List<Storage> storageList = storageService.getAll();
+        if (storageList.size()==0){
+            System.out.println("No storage list");
+            return;
+        }
         for (Storage element : storageList) {
             System.out.println(element);
         }
@@ -717,17 +745,18 @@ public class Main {
     private static void newRegisterPage(String type) {
         System.out.println("Register");
         String email = getEmail();
-//        String name = isCheckNameRegex("full name", ConstRegex.FULL_NAME_REGEX);
+        String fullName = isCheckNameRegex("full name", ConstRegex.FULL_NAME_REGEX);
         String password = getPassword();
         Acount acount = new AcountBuilder()
-                .withIdBuilder(1)
-                .withEmailBuilder(email)
-                .withPasswordBuilder(password)
-                .withTypeBuilder(type)
+                .withId(acountService.getAcountId())
+                .withEmail(email)
+                .withFullName(fullName)
+                .withPassword(password)
+                .withType(type)
                 .builder();
         boolean isResult = acountService.saveAcount(acount);
         if (isResult) {
-            IdDefaultHandle.writeIdDefault(acountService.getAcountId() + 1, ConstTypeProject.PATH_ACOUNT_ID);
+            IdDefaultHandle.writeIdDefault(acountService.getAcountId() + 1, PATH_ACOUNT_ID);
             System.out.println("succes");
         }
     }
@@ -769,7 +798,10 @@ public class Main {
 
         Map<Long, FlightDetails> map = searchFlightDetails();
         showFlightAll(map);
-
+        if (map.size()==0){
+            System.out.println("Not flight details list");
+            return;
+        }
         showMessengerEnterInformation("code");
         String flightDetailsId = input.nextLine().trim();
         List<ChairPrice> tempChairPriceList = chairPriceService.getAllByFlightDetailId(Integer.parseInt(flightDetailsId));
@@ -784,7 +816,7 @@ public class Main {
 
         String email = isCheckEmailRegex("email");
 
-        String title = getTitle("title", ConstTypeProject.LIST_TITLE);
+        String title = getTitle("title", LIST_TITLE);
         String lastName = isCheckNameRegex("flast name", ConstRegex.LAST_NAME_REGEX);
         String firtName = isCheckNameRegex("firt name", ConstRegex.FIRT_NAME_REGEX);
         String dateOfBirth = isCheckBirthRegex("date of birth");
@@ -806,10 +838,14 @@ public class Main {
             if (isMessenger) {
                 boolean isSucces = newTicketDetailsPage(email, title, lastName, firtName, dateOfBirth, nationality, payment);
                 if (isSucces) {
-                    System.out.println("succes");
-                    IdDefaultHandle.writeIdDefault(ticketService.getTicketId() + 1, ConstTypeProject.PATH_TICKET_ID);
+                    if(flightDetailsService.newUsedStorageValume(flightDetailsId,valume)){
+                        System.out.println("succes");
+                        IdDefaultHandle.writeIdDefault(ticketService.getTicketId() + 1, PATH_TICKET_ID);
+                    }
                 }
             }
+        }else {
+            showMessengerError("error");
         }
     }
 
@@ -821,7 +857,7 @@ public class Main {
             for (int i = 0; i < listTitle.length; i++) {
                 System.out.println(i + 1 + ". " + listTitle[i]);
             }
-            title = isCheckNumberRegex(title);
+            title = isCheckNumberRegex("key");
             title = listTitle[Integer.parseInt(title) - 1];
             if (title != null) {
                 key = 0;
@@ -843,13 +879,13 @@ public class Main {
 
     private static boolean newTicketDetailsPage(String email, String title, String lastName, String firtName, String dateOfBirth, String nationality, String payment) {
         TiketDetails tiketDetails = new TiketDetailsBuilder()
-                .withTicketIdBuilder(ticketService.getTicketId())
-                .withEmailBuilder(email)
-                .withTitleBuilder(title)
+                .withTicketId(ticketService.getTicketId())
+                .withEmail(email)
+                .withTitle(title)
                 .withLastName(lastName)
                 .withFirtName(firtName)
-                .withDateOfBirthBuilder(dateOfBirth)
-                .withNationalityBuilder(nationality)
+                .withDateOfBirth(dateOfBirth)
+                .withNationality(nationality)
                 .withPayment(payment)
                 .builder();
         boolean isSucces = ticketDetailService.saveTicketDetail(tiketDetails);
@@ -859,21 +895,22 @@ public class Main {
     private static boolean newTicketPage(String title, String lastName, String firtName, int flightId, long valume) {
         Flight flight = flightService.getFlightToId(flightId);
         Ticket ticket = new TicketBuilder()
-                .withIdBuilder(ticketService.getTicketId())
-                .withUserIdBuilder(acountSession.getId())
-                .withFullName(title + ": " + firtName + lastName)
-                .withValumeBuilder(valume)
+                .withId(ticketService.getTicketId())
+                .withUserId(acountSession.getId())
+                .withTitle(title)
+                .withFullName(firtName + lastName)
+                .withValume(valume)
                 .withAirlineCode(flight.getAirline_name() + "-" + flight.getAirline_id())
-                .withDepartureTimeBuilder(flight.getDeparture_time())
-                .withAirlineTimeBuilder(flight.getArrival_time())
-                .withStatusBuilder(Boolean.parseBoolean("true"))
+                .withDepartureTime(flight.getDeparture_time())
+                .withAirlineTime(flight.getArrival_time())
+                .withStatus(Boolean.parseBoolean("false"))
                 .builder();
         boolean isMessenger = ticketService.saveTicket(ticket);
         return isMessenger;
     }
 
     private static String getNationality() {
-        String nationality = getTitle("notionality", ConstTypeProject.LIST_NOTIONNALITY);
+        String nationality = getTitle("notionality", LIST_NOTIONNALITY);
         return nationality;
     }
 
@@ -984,7 +1021,7 @@ public class Main {
 
     private static Map<Long, FlightDetails> searchFlightDetails() {
         Map<Long, FlightDetails> map = new TreeMap<>();
-        List<FlightDetails> dateList;
+        List<FlightDetails> dateList=null;
         int key = -1;
         do {
             showMessengerEnterInformation(ConstMessenger.FROM_LOCATION);
@@ -993,10 +1030,13 @@ public class Main {
             String to = input.nextLine().trim();
             showMessengerEnterInformation(ConstMessenger.DATE_FLIGHT_DETAILS);
             String date = input.nextLine().trim();
-            Search searchFrom = SearchFactory.getSearchFatory(ConstTypeProject.TYPE_FORM);
-            Search searchTo = SearchFactory.getSearchFatory(ConstTypeProject.TYPE_TO);
-            Search searchDate = SearchFactory.getSearchFatory(ConstTypeProject.TYPE_DATE);
+            Search searchFrom = SearchFactory.getSearchFatory(TYPE_FORM);
+            Search searchTo = SearchFactory.getSearchFatory(TYPE_TO);
+            Search searchDate = SearchFactory.getSearchFatory(TYPE_DATE);
             List<FlightDetails> flightDetailsList = flightDetailsService.getAllList();
+            if (flightDetailsList.size()==0){
+                return map;
+            }
             List<FlightDetails> fromList = searchFrom.searchList(flightDetailsList, from);
             List<FlightDetails> toList = searchTo.searchList(fromList, to);
             dateList = searchDate.searchList(toList, date);
@@ -1026,18 +1066,18 @@ public class Main {
         String valume = isCheckNumberRegex("valume");
         String price = isCheckNumberRegex("price");
         LuggagePrice luggagePrice = new LuggagePriceBuilder()
-                .withIdBuilder(luggagePService.getLuggagePriceId(airlineName))
-                .withNameBuilder(name)
-                .withValumeBuilder(Long.parseLong(valume))
-                .withPriceBuilder(Long.parseLong(price))
+                .withId(luggagePService.getLuggagePriceId(airlineName))
+                .withName(name)
+                .withValume(Long.parseLong(valume))
+                .withPrice(Long.parseLong(price))
                 .builder();
         boolean isResult = luggagePService.saveLuggagePrice(luggagePrice, airlineName);
         if (isResult) {
             IdDefaultHandle.writeIdDefault(
                     luggagePService.getLuggagePriceId(airlineName) + 1,
-                    ConstTypeProject.PATH_LUGGAGE_ID
+                    PATH_LUGGAGE_ID
                             + airlineName
-                            + ConstTypeProject.CSV);
+                            + CSV);
             System.out.println("success");
         }
     }
@@ -1068,38 +1108,38 @@ public class Main {
         String date = isCheckDateRegex(ConstMessenger.DATE_FLIGHT_DETAILS);
         long storageValume = storageService.getValumeByIdFlight(Integer.parseInt(idFlight));
         FlightDetails flightDetails = new FlightDetailsBuilder()
-                .withIdBuilder(flightDetailsService.getFlightDetailsId())
-                .withIdFlightBuilder(Integer.parseInt(idFlight))
-                .withDateBuilder(date)
-                .withStorageValumeBuilder(storageValume)
+                .withId(flightDetailsService.getFlightDetailsId())
+                .withIdFlight(Integer.parseInt(idFlight))
+                .withDate(date)
+                .withStorageValume(storageValume)
                 .withUsedStorageValume(Long.parseLong("0"))
                 .builder();
         boolean isResult = flightDetailsService.saveFlightDetails(flightDetails);
         if (isResult) {
             int idFlightDetails = flightDetailsService.getFlightDetailsId();
             newChairPricePage(
-                    ConstTypeProject.LIST_CHAIR_PRICE_ID[0],
-                    ConstTypeProject.TYPE_SKY_BOSS,
+                    LIST_CHAIR_PRICE_ID[0],
+                    TYPE_SKY_BOSS,
                     idFlightDetails);
             newChairPricePage(
-                    ConstTypeProject.LIST_CHAIR_PRICE_ID[1],
-                    ConstTypeProject.TYPE_DELUXE,
+                    LIST_CHAIR_PRICE_ID[1],
+                    TYPE_DELUXE,
                     idFlightDetails);
             newChairPricePage(
-                    ConstTypeProject.LIST_CHAIR_PRICE_ID[2],
-                    ConstTypeProject.TYPE_ORIGINAL,
+                    LIST_CHAIR_PRICE_ID[2],
+                    TYPE_ORIGINAL,
                     idFlightDetails);
-            IdDefaultHandle.writeIdDefault(idFlightDetails + 1, ConstTypeProject.PATH_FLIGHT_DETAILS_ID);
+            IdDefaultHandle.writeIdDefault(idFlightDetails + 1, PATH_FLIGHT_DETAILS_ID);
             renderSeatSpecs(Integer.parseInt(idFlight), idFlightDetails);
         }
     }
 
     private static void newChairPricePage(int chairPriceId, String type, int idFlightDetail) {
-        String price = isCheckNumberRegex(ConstTypeProject.PRICE + type);
+        String price = isCheckNumberRegex(PRICE + type);
         ChairPrice chairPrice = new ChairPriceBuilder()
-                .withIdBuilder(chairPriceId)
-                .withTypeBuilder(type)
-                .withPriceBuilder(Long.parseLong(price))
+                .withId(chairPriceId)
+                .withType(type)
+                .withPrice(Long.parseLong(price))
                 .builder();
         chairPriceService.saveChairPrice(chairPrice, idFlightDetail);
     }
@@ -1108,13 +1148,13 @@ public class Main {
         showMessengerEnterInformation("storage");
         String valume = isCheckNumberRegex(ConstMessenger.STORAGE_VALUME);
         Storage storage = new StorageBuilder()
-                .withIdBuilder(storageService.getStorageId())
-                .withIdFlightBuilder(flightId)
-                .withValumeBuilder(Long.parseLong(valume))
+                .withId(storageService.getStorageId())
+                .withIdFlight(flightId)
+                .withValume(Long.parseLong(valume))
                 .builder();
         boolean isResult = storageService.saveStorage(storage);
         if (isResult) {
-            IdDefaultHandle.writeIdDefault(storageService.getStorageId() + 1, ConstTypeProject.PATH_STORAGE_ID);
+            IdDefaultHandle.writeIdDefault(storageService.getStorageId() + 1, PATH_STORAGE_ID);
         }
     }
 
@@ -1122,24 +1162,24 @@ public class Main {
         String lineQuantity = isCheckNumberRegex(ConstMessenger.LINE_QUANTITY);
 
         Chair chair = new ChairBuilder()
-                .withIdBuilder(chairService.getChairId())
-                .withIdFlightBuilder(idFlight)
-                .withLineQuantityBuilder(Integer.parseInt(lineQuantity))
+                .withId(chairService.getChairId())
+                .withIdFlight(idFlight)
+                .withLineQuantity(Integer.parseInt(lineQuantity))
                 .builder();
         boolean isResult = chairService.saveChair(chair);
         if (isResult) {
             Chair chairResult = chairService.getChair();
-            IdDefaultHandle.writeIdDefault(chairResult.getId() + 1, ConstTypeProject.PATH_CHAIR_ID);
+            IdDefaultHandle.writeIdDefault(chairResult.getId() + 1, PATH_CHAIR_ID);
             createChairDetailsList(chairResult);
         }
     }
 
     private static void createChairDetailsList(Chair chairResult) {
         for (int i = 0; i < chairResult.getLineQuantity(); i++) {
-            showMessengerEnterInformation("for the sequence " + ConstTypeProject.LIST_LINE[i]);
-            addListChairDetailPage(chairResult, i, ConstTypeProject.TYPE_SKY_BOSS);
-            addListChairDetailPage(chairResult, i, ConstTypeProject.TYPE_DELUXE);
-            addListChairDetailPage(chairResult, i, ConstTypeProject.TYPE_ORIGINAL);
+            showMessengerEnterInformation("for the sequence " + LIST_LINE[i]);
+            addListChairDetailPage(chairResult, i, TYPE_SKY_BOSS);
+            addListChairDetailPage(chairResult, i, TYPE_DELUXE);
+            addListChairDetailPage(chairResult, i, TYPE_ORIGINAL);
             chairDetailsService.setIndexDefault();
         }
     }
@@ -1151,7 +1191,7 @@ public class Main {
         input.nextLine();
         chairDetailsService.saveListChairDetails(
                 chairResult,
-                ConstTypeProject.LIST_LINE[i],
+                LIST_LINE[i],
                 quantityChairSkyBoss,
                 type);
     }
@@ -1171,7 +1211,7 @@ public class Main {
         if (result) {
             newStoragePage(flightService.getFlightId());
             newChairPage(flightService.getFlightId());
-            IdDefaultHandle.writeIdDefault(flightService.getFlightId() + 1, ConstTypeProject.PATH_FLIGHT_ID);
+            IdDefaultHandle.writeIdDefault(flightService.getFlightId() + 1, PATH_FLIGHT_ID);
             System.out.println("new succes");
         }
     }
@@ -1188,13 +1228,13 @@ public class Main {
         String departureTime = isCheckTimerRegex(ConstMessenger.DEPARTURE_TIME);
         String arrivalTime = isCheckTimerRegex(ConstMessenger.ARRIVAL_TIME);
         Flight flight = new FlightBuilder()
-                .withIdBuilder(flightService.getFlightId())
-                .withFrom_locationBuilder(fromLocation)
-                .withTo_locationBuilder(toLocation)
-                .withAirline_idBuilder(Integer.parseInt(airlineId))
-                .withAirline_nameBuilder(airlineName)
-                .withDeparture_timeBuilder(departureTime)
-                .withArrival_timeBuilder(arrivalTime)
+                .withId(flightService.getFlightId())
+                .withFrom_location(fromLocation)
+                .withTo_location(toLocation)
+                .withAirline_id(Integer.parseInt(airlineId))
+                .withAirline_name(airlineName)
+                .withDeparture_time(departureTime)
+                .withArrival_time(arrivalTime)
                 .builder();
         return flight;
     }
@@ -1313,6 +1353,10 @@ public class Main {
     private static void showFlightPage() {
         System.out.println("list Flight Page");
         List<Flight> list = flightService.getAllFlight();
+        if (list.size()==0){
+            System.out.println("Not flight list");
+        return;
+        }
         for (Flight elment : list) {
             System.out.println(elment);
         }

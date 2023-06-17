@@ -1,14 +1,11 @@
 package service.impl;
 
-import comparator.ComparatorIdFlight;
 import comparator.ComparatorIdLuggagePrice;
 import constType.ConstTypeProject;
-import entity.Flight;
 import entity.LuggagePrice;
 import service.FileHandleService;
 import service.IdDefaultHandle;
 import service.LuggagePriceService;
-import service.builder.FlightBuilder;
 import service.builder.LuggagePriceBuilder;
 
 import java.io.BufferedReader;
@@ -116,10 +113,10 @@ public class LuggagePriceServiceImpl implements LuggagePriceService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 LuggagePrice luggagePrice = new LuggagePriceBuilder()
-                        .withIdBuilder(Integer.parseInt(result[0]))
-                        .withNameBuilder(result[1])
-                        .withValumeBuilder(Long.parseLong(result[2]))
-                        .withPriceBuilder(Long.parseLong(result[3]))
+                        .withId(Integer.parseInt(result[0]))
+                        .withName(result[1])
+                        .withValume(Long.parseLong(result[2]))
+                        .withPrice(Long.parseLong(result[3]))
                         .builder();
                 luggagePriceList.add(luggagePrice);
             }
@@ -177,10 +174,10 @@ public class LuggagePriceServiceImpl implements LuggagePriceService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 LuggagePrice luggagePrice = new LuggagePriceBuilder()
-                        .withIdBuilder(Integer.parseInt(result[0]))
-                        .withNameBuilder(result[1])
-                        .withValumeBuilder(Long.parseLong(result[2]))
-                        .withPriceBuilder(Long.parseLong(result[3]))
+                        .withId(Integer.parseInt(result[0]))
+                        .withName(result[1])
+                        .withValume(Long.parseLong(result[2]))
+                        .withPrice(Long.parseLong(result[3]))
                         .builder();
                 luggagePriceList.add(luggagePrice);
             }
@@ -217,10 +214,10 @@ public class LuggagePriceServiceImpl implements LuggagePriceService {
             }
         }
         LuggagePrice luggagePrice = new LuggagePriceBuilder()
-                .withIdBuilder(Integer.parseInt(luggagePriceId))
-                .withNameBuilder(name)
-                .withValumeBuilder(Long.parseLong(valume))
-                .withPriceBuilder(Long.parseLong(price))
+                .withId(Integer.parseInt(luggagePriceId))
+                .withName(name)
+                .withValume(Long.parseLong(valume))
+                .withPrice(Long.parseLong(price))
                 .builder();
         luggagePriceList.remove(index);
         luggagePriceList.add(luggagePrice);

@@ -1,11 +1,9 @@
 package service.impl;
 
 import constType.ConstTypeProject;
-import entity.Ticket;
 import entity.TiketDetails;
 import service.FileHandleService;
 import service.TicketDetailService;
-import service.builder.TicketBuilder;
 import service.builder.TiketDetailsBuilder;
 
 import java.io.BufferedReader;
@@ -88,13 +86,13 @@ public class TicketDetailsServiceImpl implements TicketDetailService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 TiketDetails tiketDetails = new TiketDetailsBuilder()
-                        .withTicketIdBuilder(Integer.parseInt(result[0]))
-                        .withEmailBuilder(result[1])
-                        .withTitleBuilder(result[2])
+                        .withTicketId(Integer.parseInt(result[0]))
+                        .withEmail(result[1])
+                        .withTitle(result[2])
                         .withLastName(result[3])
                         .withFirtName(result[4])
-                        .withDateOfBirthBuilder(result[5])
-                        .withNationalityBuilder(result[6])
+                        .withDateOfBirth(result[5])
+                        .withNationality(result[6])
                         .withPayment(result[7])
                         .builder();
                 tiketDetailsList.add(tiketDetails);

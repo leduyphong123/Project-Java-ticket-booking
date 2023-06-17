@@ -2,11 +2,9 @@ package service.impl;
 
 import constType.ConstTypeProject;
 import entity.ChairPrice;
-import entity.Flight;
 import service.ChairPriceService;
 import service.FileHandleService;
 import service.builder.ChairPriceBuilder;
-import service.builder.FlightBuilder;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -74,9 +72,9 @@ public class ChairPriceServiceImpl implements ChairPriceService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 ChairPrice chairPrice = new ChairPriceBuilder()
-                        .withIdBuilder(Integer.valueOf(result[0]))
-                        .withTypeBuilder(result[1])
-                        .withPriceBuilder(Long.valueOf(result[2]))
+                        .withId(Integer.valueOf(result[0]))
+                        .withType(result[1])
+                        .withPrice(Long.valueOf(result[2]))
                         .builder();
                 chairPriceList.add(chairPrice);
             }

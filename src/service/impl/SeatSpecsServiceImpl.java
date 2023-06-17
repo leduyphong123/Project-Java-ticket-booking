@@ -3,11 +3,9 @@ package service.impl;
 import constType.ConstTypeProject;
 import entity.ChairDetails;
 import entity.ChairPrice;
-import entity.Flight;
 import entity.SeatSpecs;
 import service.FileHandleService;
 import service.SeatSpecsService;
-import service.builder.FlightBuilder;
 import service.builder.SeatSpecsBuilder;
 
 import java.io.BufferedReader;
@@ -185,12 +183,12 @@ public class SeatSpecsServiceImpl implements SeatSpecsService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 SeatSpecs seatSpecs = new SeatSpecsBuilder()
-                        .withIdBuilder(Integer.valueOf(result[0]))
-                        .withIdChairBuilder(Integer.valueOf(result[1]))
-                        .withChairNameBuilder(result[2])
-                        .withTypeBuilder(result[3])
-                        .withPriceBuilder(Long.parseLong(result[4]))
-                        .withStatusBuilder(Boolean.parseBoolean(result[5]))
+                        .withId(Integer.valueOf(result[0]))
+                        .withIdChair(Integer.valueOf(result[1]))
+                        .withChairName(result[2])
+                        .withType(result[3])
+                        .withPrice(Long.parseLong(result[4]))
+                        .withStatus(Boolean.parseBoolean(result[5]))
                         .builder();
                 seatSpecsList.add(seatSpecs);
             }
@@ -218,12 +216,12 @@ public class SeatSpecsServiceImpl implements SeatSpecsService {
 
     private void newSeatSpecsAndSave(int idFlightDetail, long priceSkyBoss, ChairDetails temp) {
         SeatSpecs seatSpecs = new SeatSpecsBuilder()
-                .withIdBuilder(Integer.valueOf(temp.getId()))
-                .withTypeBuilder(temp.getType())
-                .withChairNameBuilder(temp.getChairName())
-                .withIdChairBuilder(Integer.valueOf(temp.getIdChair()))
-                .withPriceBuilder(priceSkyBoss)
-                .withStatusBuilder(true)
+                .withId(Integer.valueOf(temp.getId()))
+                .withType(temp.getType())
+                .withChairName(temp.getChairName())
+                .withIdChair(Integer.valueOf(temp.getIdChair()))
+                .withPrice(priceSkyBoss)
+                .withStatus(true)
                 .builder();
         saveSeatSpecs(seatSpecs, idFlightDetail);
     }

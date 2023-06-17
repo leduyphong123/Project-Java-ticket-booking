@@ -1,14 +1,11 @@
 package service.impl;
 
-import comparator.ComparatorIdFlight;
 import comparator.ComparatorIdFlightDetails;
 import constType.ConstTypeProject;
-import entity.Flight;
 import entity.FlightDetails;
 import service.FileHandleService;
 import service.FlightDetailsService;
 import service.IdDefaultHandle;
-import service.builder.FlightBuilder;
 import service.builder.FlightDetailsBuilder;
 
 import java.io.BufferedReader;
@@ -90,10 +87,10 @@ public class FlightDetailsServiceImpl implements FlightDetailsService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 FlightDetails flightDetails = new FlightDetailsBuilder()
-                        .withIdBuilder(Integer.parseInt(result[0]))
-                        .withIdFlightBuilder(Integer.parseInt(result[1]))
-                        .withDateBuilder(result[2])
-                        .withStorageValumeBuilder(Long.parseLong(result[3]))
+                        .withId(Integer.parseInt(result[0]))
+                        .withIdFlight(Integer.parseInt(result[1]))
+                        .withDate(result[2])
+                        .withStorageValume(Long.parseLong(result[3]))
                         .withUsedStorageValume(Long.parseLong(result[4]))
                         .builder();
                 flightDetailsList.add(flightDetails);
@@ -164,10 +161,10 @@ public class FlightDetailsServiceImpl implements FlightDetailsService {
             }
         }
         FlightDetails flightDetailsNew = new FlightDetailsBuilder()
-                .withIdBuilder(flightDetails.getId())
-                .withIdFlightBuilder(flightDetails.getIdFlight())
-                .withDateBuilder(date)
-                .withStorageValumeBuilder(flightDetails.getStorageValume())
+                .withId(flightDetails.getId())
+                .withIdFlight(flightDetails.getIdFlight())
+                .withDate(date)
+                .withStorageValume(flightDetails.getStorageValume())
                 .withUsedStorageValume(usedStorageValume)
                 .builder();
         flightDetailsList.remove(index);
@@ -206,6 +203,32 @@ public class FlightDetailsServiceImpl implements FlightDetailsService {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean newUsedStorageValume(String flightDetailsId,long valume) {
+        List<FlightDetails> flightDetailsList = getAllList();
+        FlightDetails temp=null ;
+        int index=-1;
+        for (int i=0;i<flightDetailsList.size();i++){
+            if (flightDetailsList.get(i).getId()==Integer.parseInt(flightDetailsId)){
+                index = i;
+                temp=flightDetailsList.get(i);
+                break;
+            }
+        }
+        FlightDetails flightDetailsNew = new FlightDetailsBuilder()
+                .withId(temp.getId())
+                .withIdFlight(temp.getIdFlight())
+                .withDate(temp.getDate())
+                .withStorageValume(temp.getStorageValume())
+                .withUsedStorageValume(temp.getUsedStorageValume()+valume)
+                .builder();
+        flightDetailsList.remove(index);
+        flightDetailsList.add(flightDetailsNew);
+        ComparatorIdFlightDetails comparatorIdFlightDetails = new ComparatorIdFlightDetails();
+        Collections.sort(flightDetailsList,comparatorIdFlightDetails);
+        return saveFlightDetailsList(flightDetailsList);
     }
 
     private boolean saveFlightDetailsList(List<FlightDetails> flightDetailsList) {

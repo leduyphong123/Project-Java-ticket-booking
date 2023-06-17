@@ -2,14 +2,11 @@ package service.impl;
 
 import comparator.ComparatoIdStorage;
 import constType.ConstTypeProject;
-import entity.Flight;
 import entity.Storage;
 import service.FileHandleService;
 import service.IdDefaultHandle;
 import service.StorageService;
-import service.builder.FlightBuilder;
 import service.builder.StorageBuilder;
-
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -125,9 +122,9 @@ public class StorageServiceImpl implements StorageService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 Storage storage = new StorageBuilder()
-                        .withIdBuilder(Integer.parseInt(result[0]))
-                        .withIdFlightBuilder(Integer.parseInt(result[1]))
-                        .withValumeBuilder(Long.parseLong(result[2]))
+                        .withId(Integer.parseInt(result[0]))
+                        .withIdFlight(Integer.parseInt(result[1]))
+                        .withValume(Long.parseLong(result[2]))
                         .builder();
                 storageList.add(storage);
             }
@@ -168,7 +165,7 @@ public class StorageServiceImpl implements StorageService {
     public boolean editStorage(int storageId, String valume) {
         List<Storage> storageList = getAll();
         Storage storage = new StorageBuilder()
-                .withValumeBuilder(Long.parseLong(valume))
+                .withValume(Long.parseLong(valume))
                 .builder();
         int index=-1;
         for (int i=0;i<storageList.size();i++){
@@ -186,7 +183,7 @@ public class StorageServiceImpl implements StorageService {
         storageList.add(storage);
         ComparatoIdStorage comparatoIdStorage = new ComparatoIdStorage();
         Collections.sort(storageList,comparatoIdStorage);
-        return true;
+        return saveStorageList(storageList);
     }
 
     @Override
@@ -206,6 +203,44 @@ public class StorageServiceImpl implements StorageService {
         storageList.remove(index);
         ComparatoIdStorage comparatoIdStorage = new ComparatoIdStorage();
         Collections.sort(storageList,comparatoIdStorage);
+        return saveStorageList(storageList);
+    }
+
+    private boolean saveStorageList(List<Storage> storageList) {
+        if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_STORAGE)) {
+            return false;
+        }
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        try {
+            fw = new FileWriter(ConstTypeProject.PATH_STORAGE, false);
+            bw = new BufferedWriter(fw);
+            for (Storage element:storageList){
+                bw.write(String.valueOf(element.getId()));
+                bw.write(",");
+                bw.write(String.valueOf(element.getIdFlight()));
+                bw.write(",");
+                bw.write(String.valueOf(element.getValume()));
+                bw.newLine();
+            }
+        } catch (Exception e) {
+            return false;
+        } finally {
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+            if (fw != null) {
+                try {
+                    fw.close();
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 }

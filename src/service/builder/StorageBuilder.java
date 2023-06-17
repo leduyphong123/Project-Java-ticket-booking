@@ -7,17 +7,17 @@ public class StorageBuilder {
     private int idFlight;
     private long valume;
 
-    public StorageBuilder withIdBuilder(int id) {
+    public StorageBuilder withId(int id) {
         this.id = id;
         return this;
     }
 
-    public StorageBuilder withIdFlightBuilder(int idFlight) {
+    public StorageBuilder withIdFlight(int idFlight) {
         this.idFlight = idFlight;
         return this;
     }
 
-    public StorageBuilder withValumeBuilder(long valume) {
+    public StorageBuilder withValume(long valume) {
         this.valume = valume;
         return this;
     }

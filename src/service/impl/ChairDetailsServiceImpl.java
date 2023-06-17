@@ -3,14 +3,15 @@ package service.impl;
 import constType.ConstTypeProject;
 import entity.Chair;
 import entity.ChairDetails;
-import entity.Flight;
-import service.IdDefaultHandle;
-import service.builder.ChairDetailsBuilder;
 import service.ChairDetailsService;
 import service.FileHandleService;
-import service.builder.FlightBuilder;
+import service.IdDefaultHandle;
+import service.builder.ChairDetailsBuilder;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,10 +89,10 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
         for (int i = index; i < numberChair + index; i++) {
             int flightId = chair.getIdFlight();
             ChairDetails chairDetails = new ChairDetailsBuilder()
-                    .withIdBuilder(getChairDetailsId(flightId))
-                    .withIdChairBuilder(chair.getId())
-                    .withChairNameBuilder(nameLine + i)
-                    .withTypeBuilder(type)
+                    .withId(getChairDetailsId(flightId))
+                    .withIdChair(chair.getId())
+                    .withChairName(nameLine + i)
+                    .withType(type)
                     .builder();
             saveChairDetails(chairDetails, flightId);
             IdDefaultHandle.writeIdDefault(getChairDetailsId(flightId)+1,
@@ -146,10 +147,10 @@ public class ChairDetailsServiceImpl implements ChairDetailsService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 ChairDetails chairDetails = new ChairDetailsBuilder()
-                        .withIdBuilder(Integer.valueOf(result[0]))
-                        .withIdChairBuilder(Integer.valueOf(result[1]))
-                        .withChairNameBuilder(result[2])
-                        .withTypeBuilder(result[3])
+                        .withId(Integer.valueOf(result[0]))
+                        .withIdChair(Integer.valueOf(result[1]))
+                        .withChairName(result[2])
+                        .withType(result[3])
                         .builder();
                 chairDetailsList.add(chairDetails);
             }

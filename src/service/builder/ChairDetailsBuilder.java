@@ -8,22 +8,22 @@ public class ChairDetailsBuilder {
     private String chairName;
     private String type;
 
-    public ChairDetailsBuilder withIdBuilder(int id) {
+    public ChairDetailsBuilder withId(int id) {
         this.id=id;
         return this;
     }
 
-    public ChairDetailsBuilder withIdChairBuilder(int idChair) {
+    public ChairDetailsBuilder withIdChair(int idChair) {
         this.idChair=idChair;
         return this;
     }
 
-    public ChairDetailsBuilder withChairNameBuilder(String chairName) {
+    public ChairDetailsBuilder withChairName(String chairName) {
         this.chairName=chairName;
         return this;
     }
 
-    public ChairDetailsBuilder withTypeBuilder(String type) {
+    public ChairDetailsBuilder withType(String type) {
         this.type = type;
         return this;
     }

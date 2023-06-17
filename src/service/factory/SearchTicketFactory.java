@@ -1,6 +1,5 @@
 package service.factory;
 
-import constType.ConstTypeProject;
 import entity.SearchTicket;
 import entity.impl.SearchTicketArialineCodeImpl;
 import entity.impl.SearchTicketFullNameImpl;

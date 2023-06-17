@@ -1,17 +1,17 @@
 package service.impl;
 
 import comparator.ComparatorIdChair;
-import comparator.ComparatorIdFlight;
 import constType.ConstTypeProject;
 import entity.Chair;
-import entity.Flight;
 import service.ChairService;
 import service.FileHandleService;
 import service.IdDefaultHandle;
 import service.builder.ChairBuilder;
-import service.builder.FlightBuilder;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -89,9 +89,9 @@ public class ChairServiceImpl implements ChairService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 Chair chairs = new ChairBuilder()
-                        .withIdBuilder(Integer.parseInt(result[0]))
-                        .withIdFlightBuilder(Integer.parseInt(result[1]))
-                        .withLineQuantityBuilder(Integer.parseInt(result[2]))
+                        .withId(Integer.parseInt(result[0]))
+                        .withIdFlight(Integer.parseInt(result[1]))
+                        .withLineQuantity(Integer.parseInt(result[2]))
                         .builder();
                 chairList.add(chairs);
             }
@@ -150,9 +150,9 @@ public class ChairServiceImpl implements ChairService {
             }
         }
         Chair chairNew = new ChairBuilder()
-                .withIdBuilder(chair.getId())
-                .withIdFlightBuilder(chair.getIdFlight())
-                .withLineQuantityBuilder(Integer.parseInt(lineQuantity))
+                .withId(chair.getId())
+                .withIdFlight(chair.getIdFlight())
+                .withLineQuantity(Integer.parseInt(lineQuantity))
                 .builder();
         chairList.remove(index);
         chairList.add(chairNew);

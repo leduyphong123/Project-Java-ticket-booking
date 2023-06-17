@@ -11,37 +11,37 @@ public class FlightBuilder {
     private String departure_time;
     private String arrival_time;
 
-    public FlightBuilder withIdBuilder(int id) {
+    public FlightBuilder withId(int id) {
         this.id = id;
         return this;
     }
 
-    public FlightBuilder withFrom_locationBuilder(String from_location) {
+    public FlightBuilder withFrom_location(String from_location) {
         this.from_location = from_location;
         return this;
     }
 
-    public FlightBuilder withTo_locationBuilder(String to_location) {
+    public FlightBuilder withTo_location(String to_location) {
         this.to_location = to_location;
         return this;
     }
 
-    public FlightBuilder withAirline_idBuilder(int airline_id) {
+    public FlightBuilder withAirline_id(int airline_id) {
         this.airline_id = airline_id;
         return this;
     }
 
-    public FlightBuilder withAirline_nameBuilder(String airline_name) {
+    public FlightBuilder withAirline_name(String airline_name) {
         this.airline_name = airline_name;
         return this;
     }
 
-    public FlightBuilder withDeparture_timeBuilder(String departure_time) {
+    public FlightBuilder withDeparture_time(String departure_time) {
         this.departure_time = departure_time;
         return this;
     }
 
-    public FlightBuilder withArrival_timeBuilder(String arrival_time) {
+    public FlightBuilder withArrival_time(String arrival_time) {
         this.arrival_time = arrival_time;
         return this;
     }

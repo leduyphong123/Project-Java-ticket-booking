@@ -4,13 +4,14 @@ import comparator.ComparatorIdFlight;
 import constType.ConstTypeProject;
 import entity.Flight;
 import service.FileHandleService;
-import service.builder.FlightBuilder;
 import service.FlightService;
 import service.IdDefaultHandle;
+import service.builder.FlightBuilder;
 
-import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.*;
 
 public class FlightServiceImpl implements FlightService {
@@ -75,13 +76,13 @@ public class FlightServiceImpl implements FlightService {
             while ((line = br.readLine()) != null) {
                 String[] result = line.split(",");
                 Flight flight = new FlightBuilder()
-                        .withIdBuilder(Integer.valueOf(result[0]))
-                        .withFrom_locationBuilder(result[1])
-                        .withTo_locationBuilder(result[2])
-                        .withAirline_idBuilder(Integer.valueOf(result[3]))
-                        .withAirline_nameBuilder(result[4])
-                        .withDeparture_timeBuilder(result[5])
-                        .withArrival_timeBuilder(result[6])
+                        .withId(Integer.valueOf(result[0]))
+                        .withFrom_location(result[1])
+                        .withTo_location(result[2])
+                        .withAirline_id(Integer.valueOf(result[3]))
+                        .withAirline_name(result[4])
+                        .withDeparture_time(result[5])
+                        .withArrival_time(result[6])
                         .builder();
                 flightList.add(flight);
             }

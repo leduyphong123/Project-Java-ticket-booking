@@ -11,22 +11,22 @@ public class FlightDetailsBuilder {
     private String date;
     private long storageValume;
     private long usedStorageValume;
-    public FlightDetailsBuilder withIdBuilder(int id) {
+    public FlightDetailsBuilder withId(int id) {
         this.id = id;
         return this;
     }
 
-    public FlightDetailsBuilder withIdFlightBuilder(int idFlight) {
+    public FlightDetailsBuilder withIdFlight(int idFlight) {
         this.idFlight = idFlight;
         return this;
     }
 
-    public FlightDetailsBuilder withDateBuilder(String date) {
+    public FlightDetailsBuilder withDate(String date) {
         this.date = date;
         return this;
     }
 
-    public FlightDetailsBuilder withStorageValumeBuilder(long storageValume) {
+    public FlightDetailsBuilder withStorageValume(long storageValume) {
         this.storageValume = storageValume;
         return this;
     }
