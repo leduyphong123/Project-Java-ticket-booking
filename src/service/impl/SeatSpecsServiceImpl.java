@@ -160,6 +160,18 @@ public class SeatSpecsServiceImpl implements SeatSpecsService {
         return true;
     }
 
+    @Override
+    public String getChairBlank(int flightDetailsId) {
+        List<SeatSpecs> seatSpecsList = getAllSeatSpecs(flightDetailsId);
+        int chair=0;
+        for (int i=0;i<seatSpecsList.size();i++){
+            if (seatSpecsList.get(i).isStatus()==false){
+                chair++;
+            }
+        }
+        return  chair+"/"+seatSpecsList.size();
+    }
+
 
     private List<SeatSpecs> getAllSeatSpecs(int idFlightDetails) {
         if (!FileHandleService.isFileEmtry(

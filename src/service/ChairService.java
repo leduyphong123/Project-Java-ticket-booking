@@ -22,4 +22,5 @@ public interface ChairService {
     boolean editChair(Chair chair, String lineQuantity);
 
     void deleteChair(int flightId);
+
 }

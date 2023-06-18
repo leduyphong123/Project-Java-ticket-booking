@@ -181,12 +181,14 @@ public class TicketServiceImpl implements TicketService {
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-            fw = new FileWriter(ConstTypeProject.PATH_TICKET, true);
+            fw = new FileWriter(ConstTypeProject.PATH_TICKET, false);
             bw = new BufferedWriter(fw);
             for (Ticket element : ticketList) {
                 bw.write(String.valueOf(element.getId()));
                 bw.write(",");
                 bw.write(String.valueOf(element.getUserId()));
+                bw.write(",");
+                bw.write(element.getTitle());
                 bw.write(",");
                 bw.write(element.getFullName());
                 bw.write(",");

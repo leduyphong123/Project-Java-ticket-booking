@@ -1,4 +1,4 @@
-import constType.ConstMessenger;
+import static constType.ConstMessenger.*;
 import constType.ConstRegex;
 import entity.*;
 import regex.*;
@@ -157,7 +157,6 @@ public class Main {
             System.out.println("2.Luggage ");
             System.out.println("3.Ticket ");
             System.out.println("4.Logout ");
-            System.out.println("0.Exit");
             key = input.nextInt();
             input.nextLine();
             switch (key) {
@@ -172,9 +171,6 @@ public class Main {
                     break;
                 case 4:
                     logout();
-                    break;
-                case 0:
-                default:
                     break;
             }
         } while (key != 0);
@@ -197,20 +193,24 @@ public class Main {
                         System.out.println("No flight details list");
                         break;
                     }
-                    for (FlightDetails element : detailsListDate) {
-                        System.out.println(element);
-                    }
+
+                    showFlightDetails(detailsListDate);
                     break;
                 case 2:
-                    for (FlightDetails element : flightDetailsList) {
-                        System.out.println(element);
-                    }
+                    showFlightDetails(flightDetailsList);
                     break;
                 default:
                     keys=0;
                     break;
             }
         }while (keys!=0);
+    }
+
+    private static void showFlightDetails(List<FlightDetails> detailsListDate) {
+        for (FlightDetails element : detailsListDate) {
+            String chair= seatSpecsService.getChairBlank(element.getId());
+            System.out.println(element+chair+"{seat status= "+chair+"}");
+        }
     }
 
     private static void ticketPageStaff() {
@@ -443,7 +443,7 @@ public class Main {
         String usedStorageValume;
         int key = -1;
         do {
-            date = isCheckDateRegex(ConstMessenger.DATE_FLIGHT_DETAILS);
+            date = isCheckDateRegex(DATE_FLIGHT_DETAILS);
             usedStorageValume = isCheckNumberRegex("used storage valume");
             boolean isUsedMax = flightDetailsService.isUsedStorageMax(flightDetailsId, usedStorageValume);
             if (isUsedMax) {
@@ -629,7 +629,7 @@ public class Main {
         if (!isIdExit) {
             showMessengerError("Not storage id");
         }
-        String valume = isCheckNumberRegex(ConstMessenger.STORAGE_VALUME);
+        String valume = isCheckNumberRegex(STORAGE_VALUME);
         boolean isResult = storageService.editStorage(Integer.parseInt(storageId), valume);
         if (isResult) {
             System.out.println("Edit susces");
@@ -1024,12 +1024,11 @@ public class Main {
         List<FlightDetails> dateList=null;
         int key = -1;
         do {
-            showMessengerEnterInformation(ConstMessenger.FROM_LOCATION);
+            showMessengerEnterInformation(FROM_LOCATION);
             String from = input.nextLine().trim();
-            showMessengerEnterInformation(ConstMessenger.TO_LOCATION);
+            showMessengerEnterInformation(TO_LOCATION);
             String to = input.nextLine().trim();
-            showMessengerEnterInformation(ConstMessenger.DATE_FLIGHT_DETAILS);
-            String date = input.nextLine().trim();
+            String date = isCheckDateInputRegex(DATE_FLIGHT_DETAILS);
             Search searchFrom = SearchFactory.getSearchFatory(TYPE_FORM);
             Search searchTo = SearchFactory.getSearchFatory(TYPE_TO);
             Search searchDate = SearchFactory.getSearchFatory(TYPE_DATE);
@@ -1101,11 +1100,11 @@ public class Main {
     }
 
     private static void newflightDetailsPage() {
-        showMessengerEnterInformation(ConstMessenger.FLIGHT);
+        showMessengerEnterInformation(FLIGHT);
         showFlightPage();
-        showMessengerEnterInformation(ConstMessenger.ID_FLIGHT);
+        showMessengerEnterInformation(ID_FLIGHT);
         String idFlight = input.nextLine().trim();
-        String date = isCheckDateRegex(ConstMessenger.DATE_FLIGHT_DETAILS);
+        String date = isCheckDateRegex(DATE_FLIGHT_DETAILS);
         long storageValume = storageService.getValumeByIdFlight(Integer.parseInt(idFlight));
         FlightDetails flightDetails = new FlightDetailsBuilder()
                 .withId(flightDetailsService.getFlightDetailsId())
@@ -1146,7 +1145,7 @@ public class Main {
 
     private static void newStoragePage(int flightId) {
         showMessengerEnterInformation("storage");
-        String valume = isCheckNumberRegex(ConstMessenger.STORAGE_VALUME);
+        String valume = isCheckNumberRegex(STORAGE_VALUME);
         Storage storage = new StorageBuilder()
                 .withId(storageService.getStorageId())
                 .withIdFlight(flightId)
@@ -1159,7 +1158,7 @@ public class Main {
     }
 
     private static void newChairPage(int idFlight) {
-        String lineQuantity = isCheckNumberRegex(ConstMessenger.LINE_QUANTITY);
+        String lineQuantity = isCheckNumberRegex(LINE_QUANTITY);
 
         Chair chair = new ChairBuilder()
                 .withId(chairService.getChairId())
@@ -1217,16 +1216,16 @@ public class Main {
     }
 
     private static Flight getInputFlight() {
-        showMessengerEnterInformation(ConstMessenger.FROM_LOCATION);
+        showMessengerEnterInformation(FROM_LOCATION);
         String fromLocation = input.nextLine().trim();
-        showMessengerEnterInformation(ConstMessenger.TO_LOCATION);
+        showMessengerEnterInformation(TO_LOCATION);
         String toLocation = input.nextLine().trim();
-        showMessengerEnterInformation(ConstMessenger.AIRLINE_ID);
+        showMessengerEnterInformation(AIRLINE_ID);
         String airlineId = input.nextLine().trim();
-        showMessengerEnterInformation(ConstMessenger.AIRLINE_NAME);
+        showMessengerEnterInformation(AIRLINE_NAME);
         String airlineName = input.nextLine().trim();
-        String departureTime = isCheckTimerRegex(ConstMessenger.DEPARTURE_TIME);
-        String arrivalTime = isCheckTimerRegex(ConstMessenger.ARRIVAL_TIME);
+        String departureTime = isCheckTimerRegex(DEPARTURE_TIME);
+        String arrivalTime = isCheckTimerRegex(ARRIVAL_TIME);
         Flight flight = new FlightBuilder()
                 .withId(flightService.getFlightId())
                 .withFrom_location(fromLocation)

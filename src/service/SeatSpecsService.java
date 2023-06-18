@@ -15,4 +15,6 @@ public interface SeatSpecsService {
     List<SeatSpecs> getTypeAndId(int idFlightDetail, ChairPrice chairPrice);
 
     boolean editFile(SeatSpecs seatSpecs, String flightDetailsId);
+
+    String getChairBlank(int flightDetailsId);
 }

@@ -177,6 +177,7 @@ public class ChairServiceImpl implements ChairService {
         saveChairList(chairList);
     }
 
+
     private boolean saveChairList(List<Chair> chairList) {
         if (!FileHandleService.isFileEmtry(ConstTypeProject.PATH_CHAIR)){
             return false;

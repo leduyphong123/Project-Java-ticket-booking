@@ -11,6 +11,7 @@ public class TicketBuilder {
     private String airlineCode;
     private String departureTime;
     private String airlineTime;
+
     private boolean status;
 
     public TicketBuilder withId(int id) {
