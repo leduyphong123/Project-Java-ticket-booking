@@ -1,4 +1,4 @@
-import static constType.ConstMessenger.*;
+import comparator.ComparotorPrice;
 import constType.ConstRegex;
 import entity.*;
 import regex.*;
@@ -8,11 +8,9 @@ import service.factory.SearchFactory;
 import service.factory.SearchTicketFactory;
 import service.impl.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.*;
 
+import static constType.ConstMessenger.*;
 import static constType.ConstTypeProject.*;
 
 public class Main {
@@ -399,6 +397,7 @@ public class Main {
             System.out.println("3.Show Flight details");
             System.out.println("4.edit Flight details");
             System.out.println("5.Delete flight details");
+            System.out.println("6.Delete flight details");
             System.out.println("0.Exit");
             keys = input.nextInt();
             input.nextLine();
@@ -466,8 +465,6 @@ public class Main {
         }
     }
 
-
-
     private static void showHistoryTicketUser() {
         List<Ticket> ticket = ticketService.getTicketUser(acountSession.getId());
         if (ticket.size()==0){
@@ -475,8 +472,6 @@ public class Main {
             return;
         }
         showTicket(ticket);
-//         keys;
-//        do {
         System.out.println("Do you want to see ticket details?");
         System.out.println("1. Yes");
         System.out.println("0. No");
@@ -486,17 +481,6 @@ public class Main {
             TiketDetails tiketDetails = ticketDetailService.getTicketDetailsUser(ticketId);
             System.out.println(tiketDetails);
         }
-
-//            switch (keys) {
-//                case 1:
-//
-//                    keys=0;
-//                    break;
-//                default:
-//                    keys=0;
-//                    break;
-//            }
-//        } while (keys != 0);
     }
 
     private static void acountPageAdmin() {
@@ -801,7 +785,7 @@ public class Main {
 
     private static void viewBookTicket() {
 
-        Map<Long, FlightDetails> map = searchFlightDetails();
+        Map< FlightDetails,Long> map = searchFlightDetails();
         showFlightAll(map);
         if (map.size()==0){
             System.out.println("Not flight details list");
@@ -822,7 +806,7 @@ public class Main {
         String email = isCheckEmailRegex("email");
 
         String title = getTitle("title", LIST_TITLE);
-        String lastName = isCheckNameRegex("flast name", ConstRegex.LAST_NAME_REGEX);
+        String lastName = isCheckNameRegex("last name", ConstRegex.LAST_NAME_REGEX);
         String firtName = isCheckNameRegex("firt name", ConstRegex.FIRT_NAME_REGEX);
         String dateOfBirth = isCheckBirthRegex("date of birth");
 
@@ -1007,25 +991,25 @@ public class Main {
         }
     }
 
-    private static void showFlightAll(Map<Long, FlightDetails> map) {
+    private static void showFlightAll(Map< FlightDetails,Long> map) {
         System.out.println("Flight all");
-        for (Map.Entry<Long, FlightDetails> entry : map.entrySet()) {
-            Flight flight = flightService.getFlightToId(entry.getValue().getIdFlight());
+        for (Map.Entry<FlightDetails,Long> entry : map.entrySet()) {
+            Flight flight = flightService.getFlightToId(entry.getKey().getIdFlight());
             System.out.println("Flight{" +
-                    "code='" + entry.getValue().getId() + '\'' +
+                    "code='" + entry.getKey().getId() + '\'' +
                     ", airline_name='" + flight.getAirline_name() + '\'' +
                     ", from_location='" + flight.getFrom_location() + '\'' +
                     ", to_location='" + flight.getTo_location() + '\'' +
                     ", departure_time='" + flight.getDeparture_time() + '\'' +
                     ", arrival_time='" + flight.getArrival_time() + '\'' +
-                    ", price ='" + entry.getKey() + '\'' +
-                    ", date ='" + entry.getValue().getDate() + '\'' +
+                    ", price ='" + entry.getValue() + '\'' +
+                    ", date ='" + entry.getKey().getDate() + '\'' +
                     '}');
         }
     }
 
-    private static Map<Long, FlightDetails> searchFlightDetails() {
-        Map<Long, FlightDetails> map = new TreeMap<>();
+    private static Map<FlightDetails, Long> searchFlightDetails() {
+        Map<FlightDetails, Long> map = new HashMap<>();
         List<FlightDetails> dateList=null;
         int key = -1;
         do {
@@ -1051,12 +1035,25 @@ public class Main {
             }
         } while (key != 0);
 
+        Map<FlightDetails, Long> sortedMap = getFlightDetailsLongMap(map, dateList);
+        return sortedMap;
+    }
+
+    private static Map<FlightDetails, Long> getFlightDetailsLongMap(Map<FlightDetails, Long> map, List<FlightDetails> dateList) {
         for (int i = 0; i < dateList.size(); i++) {
             FlightDetails tempFlightDetails = dateList.get(i);
             List<ChairPrice> tempChairPriceList = chairPriceService.getAllByFlightDetailId(tempFlightDetails.getIdFlight());
-            map.put(tempChairPriceList.get(2).getPrice(), tempFlightDetails);
+            map.put( tempFlightDetails,tempChairPriceList.get(2).getPrice());
         }
-        return map;
+
+        List<Map.Entry<FlightDetails, Long>> flightPriceList = new ArrayList<>(map.entrySet());
+        ComparotorPrice comparotorPrice = new ComparotorPrice();
+        Collections.sort(flightPriceList, comparotorPrice);
+        Map<FlightDetails, Long> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<FlightDetails, Long> entry : flightPriceList) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
     }
 
     private static void newLuggagePricePage() {
