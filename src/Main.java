@@ -171,6 +171,7 @@ public class Main {
                     break;
                 case 4:
                     logout();
+                    key=0;
                     break;
             }
         } while (key != 0);
@@ -209,7 +210,7 @@ public class Main {
     private static void showFlightDetails(List<FlightDetails> detailsListDate) {
         for (FlightDetails element : detailsListDate) {
             String chair= seatSpecsService.getChairBlank(element.getId());
-            System.out.println(element+chair+"{seat status= "+chair+"}");
+            System.out.println(element+"{seat status= "+chair+"}");
         }
     }
 
@@ -220,6 +221,7 @@ public class Main {
             System.out.println("1.Show Ticket All");
             System.out.println("2.Search Ticket");
             System.out.println("3.Check in");
+            System.out.println("4.Book Ticket");
 //            System.out.println("9.Edit Ticket");
             System.out.println("0.Exit");
             keys = input.nextInt();
@@ -240,6 +242,9 @@ public class Main {
                     } else {
                         showMessengerError("Check in error");
                     }
+                    break;
+                case 4:
+                    viewBookTicket();
                     break;
 //                case 9:
 //                    int ticketId = Integer.parseInt(isCheckNumberRegex("ticket id"));
@@ -1241,6 +1246,7 @@ public class Main {
     private static void renderSeatSpecs(int idFlight, int idFlightDetail) {
         List<ChairDetails> chairDetailsList = chairDetailsService.getAllByFlightId(idFlight);
         List<ChairPrice> chairPriceList = chairPriceService.getAllByFlightDetailId(idFlightDetail);
+
         seatSpecsService.saveSeatSpecsList(chairDetailsList, chairPriceList, idFlightDetail);
     }
 
