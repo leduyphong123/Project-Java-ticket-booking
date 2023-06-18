@@ -31,41 +31,41 @@ public class Main {
     public static Acount acountSession = null;
 
     public static void main(String[] args) {
-        newRegisterPage(TYPE_ADMIN);
+//        newRegisterPage(TYPE_ADMIN);
 
-//        int keys;
-//        do {
-//            if (acountSession != null) {
-//                if (acountSession.getType().equals(TYPE_USER)) {
-//                    viewMenuUser();
-//                } else if (acountSession.getType().equals(TYPE_ADMIN)) {
-//                    viewMenuAdmin();
-//                } else if (acountSession.getType().equals(TYPE_STAFF)) {
-//                    viewMenuStaff();
-//                }
-//            }
-//            System.out.println("Menu");
-//            System.out.println("1.Register");
-//            System.out.println("2.Login");
-//            System.out.println("3.Book ticket");
-//            System.out.println("0.Exit");
-//            keys = input.nextInt();
-//            input.nextLine();
-//            switch (keys) {
-//                case 1:
-//                    newRegisterPage(TYPE_USER);
-//                    break;
-//                case 2:
-//                    newLoginPage();
-//                    break;
-//                case 3:
-//                    viewBookTicket();
-//                    break;
-//                case 0:
-//                default:
-//                    break;
-//            }
-//        } while (keys != 0);
+        int keys;
+        do {
+            if (acountSession != null) {
+                if (acountSession.getType().equals(TYPE_USER)) {
+                    viewMenuUser();
+                } else if (acountSession.getType().equals(TYPE_ADMIN)) {
+                    viewMenuAdmin();
+                } else if (acountSession.getType().equals(TYPE_STAFF)) {
+                    viewMenuStaff();
+                }
+            }
+            System.out.println("Menu");
+            System.out.println("1.Register");
+            System.out.println("2.Login");
+            System.out.println("3.Book ticket");
+            System.out.println("0.Exit");
+            keys = input.nextInt();
+            input.nextLine();
+            switch (keys) {
+                case 1:
+                    newRegisterPage(TYPE_USER);
+                    break;
+                case 2:
+                    newLoginPage();
+                    break;
+                case 3:
+                    viewBookTicket();
+                    break;
+                case 0:
+                default:
+                    break;
+            }
+        } while (keys != 0);
 
     }
 

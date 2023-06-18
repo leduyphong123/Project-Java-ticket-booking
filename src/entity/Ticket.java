@@ -104,6 +104,12 @@ public class Ticket {
 
     @Override
     public String toString() {
+        String temp;
+        if (status){
+            temp="check in";
+        }else {
+            temp="check out";
+        }
         return "Ticket{" +
                 "id=" + id +
                 ", userId=" + userId +
@@ -113,7 +119,7 @@ public class Ticket {
                 ", airlineCode='" + airlineCode + '\'' +
                 ", departureTime='" + departureTime + '\'' +
                 ", airlineTime='" + airlineTime + '\'' +
-                ", status=" + status +
+                ", status=" + temp +
                 '}';
     }
 }
